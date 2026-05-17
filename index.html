@@ -1,0 +1,1984 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>我的AI作文集</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&family=ZCOOL+KuaiLe&display=swap');
+  *{margin:0;padding:0;box-sizing:border-box}
+  :root{
+    --pink:#FF6B9D;--pink-light:#FFC2D4;--pink-glow:rgba(255,107,157,.35);
+    --blue:#4FC3F7;--blue-light:#B3E5FC;--blue-glow:rgba(79,195,247,.35);
+    --purple:#B388FF;--purple-glow:rgba(179,136,255,.35);
+    --cyan:#00E5FF;--green:#69F0AE;--orange:#FFAB40;--yellow:#FFD54F;
+    --bg:#0B1426;--bg2:#111D35;--card:rgba(18,30,56,.88);
+    --text:#E6EDF3;--text2:#9DAAB8;--text3:#5A6A7A;
+    --glass:rgba(255,255,255,.07);--glass-border:rgba(255,255,255,.1);
+    --radius:20px;--radius-sm:12px;
+    --neon-pink:0 0 8px var(--pink-glow),0 0 30px var(--pink-glow);
+    --neon-blue:0 0 8px var(--blue-glow),0 0 30px var(--blue-glow);
+    --neon-purple:0 0 8px var(--purple-glow),0 0 30px var(--purple-glow);
+  }
+  body{font-family:'Noto Sans SC',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;
+    background-image:radial-gradient(ellipse at 20% 50%,rgba(79,195,247,.08) 0%,transparent 50%),radial-gradient(ellipse at 80% 20%,rgba(179,136,255,.08) 0%,transparent 50%),radial-gradient(ellipse at 60% 80%,rgba(255,107,157,.06) 0%,transparent 50%)}
+
+  #particles{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none}
+  .glow-orb{position:fixed;border-radius:50%;filter:blur(90px);opacity:.22;z-index:0;pointer-events:none;animation:orbFloat 14s ease-in-out infinite}
+  .glow-orb.o1{width:400px;height:400px;background:var(--pink);top:-100px;right:-100px}
+  .glow-orb.o2{width:360px;height:360px;background:var(--blue);bottom:-80px;left:-80px;animation-delay:-5s}
+  @keyframes orbFloat{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(30px,-25px) scale(1.08)}66%{transform:translate(-20px,30px) scale(.92)}}
+
+  /* ===== 登录/注册页 ===== */
+.login-overlay{position:fixed;inset:0;background:var(--bg);z-index:300;display:flex;justify-content:center;align-items:center;background-image:radial-gradient(ellipse at 20% 50%,rgba(79,195,247,.1) 0%,transparent 50%),radial-gradient(ellipse at 80% 20%,rgba(179,136,255,.1) 0%,transparent 50%),radial-gradient(ellipse at 60% 80%,rgba(255,107,157,.08) 0%,transparent 50%)}
+.login-overlay.hidden{display:none}
+.login-container{position:relative;width:400px;max-width:92vw;padding:40px 32px;background:var(--card);border:1px solid var(--glass-border);border-radius:var(--radius);backdrop-filter:blur(20px);animation:popIn .5s cubic-bezier(.4,0,.2,1)}
+.login-container::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--pink),var(--cyan),var(--purple),transparent)}
+.login-header{text-align:center;margin-bottom:24px}
+.login-logo{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:8px}
+.login-logo h1{font-family:'ZCOOL KuaiLe',cursive;font-size:1.6rem;background:linear-gradient(135deg,var(--pink),var(--yellow),var(--cyan),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 0 10px rgba(255,107,157,.35))}
+.login-subtitle{color:var(--text2);font-size:.8rem;letter-spacing:2px}
+.login-tabs{display:flex;gap:0;margin-bottom:20px;border:1px solid var(--glass-border);border-radius:10px;overflow:hidden}
+.login-tab{flex:1;padding:10px;border:none;font-family:'Noto Sans SC',sans-serif;font-size:.85rem;cursor:pointer;transition:all .3s;background:transparent;color:var(--text2)}
+.login-tab.active{background:var(--glass);color:var(--text);font-weight:500}
+.login-tab:first-child{border-right:1px solid var(--glass-border)}
+.login-form{display:flex;flex-direction:column;gap:12px}
+.login-submit{width:100%;padding:12px;border:none;border-radius:10px;font-family:'Noto Sans SC',sans-serif;font-size:.95rem;font-weight:600;cursor:pointer;transition:all .3s;background:linear-gradient(135deg,var(--pink),var(--purple));color:#fff;letter-spacing:3px;margin-top:4px}
+.login-submit:hover{transform:translateY(-2px);box-shadow:0 6px 24px rgba(255,107,157,.35)}
+.invite-submit{background:linear-gradient(135deg,var(--cyan),var(--purple))}
+.invite-submit:hover{box-shadow:0 6px 24px rgba(79,195,247,.35)}
+.login-switch-mode{text-align:center;font-size:.8rem;color:var(--text3)}
+.login-switch-mode a{color:var(--cyan);text-decoration:none;margin-left:4px}
+.login-switch-mode a:hover{text-decoration:underline}
+.login-hint{text-align:center;font-size:.76rem;color:var(--text3);margin-top:4px}
+.login-error{color:#FF5252;font-size:.78rem;text-align:center;min-height:20px}
+.login-form .form-group input{width:100%;border:1px solid var(--glass-border);border-radius:8px;padding:12px 14px;font-family:'Noto Sans SC',sans-serif;font-size:.9rem;color:var(--text);background:var(--bg)}
+.login-form .form-group input:focus{outline:none;border-color:var(--cyan);box-shadow:var(--neon-blue)}
+.login-form .form-group label{font-size:.82rem;font-weight:500;color:var(--text);margin-bottom:4px;display:block}
+
+/* ===== 顶部工具栏 ===== */
+.topbar{position:fixed;top:0;left:0;right:0;height:44px;background:var(--card);border-bottom:1px solid var(--glass-border);backdrop-filter:blur(20px);z-index:50;display:flex;align-items:center;justify-content:space-between;padding:0 20px}
+.topbar-brand{font-family:'ZCOOL KuaiLe',cursive;font-size:1rem;background:linear-gradient(135deg,var(--pink),var(--yellow),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.btn-ai-create{display:inline-flex;align-items:center;gap:6px;padding:7px 20px;border:1px solid var(--purple);border-radius:50px;font-family:'Noto Sans SC',sans-serif;font-size:.82rem;font-weight:500;cursor:pointer;transition:all .3s;background:linear-gradient(135deg,rgba(179,136,255,.15),rgba(255,107,157,.1));color:var(--purple)}
+.btn-ai-create:hover{transform:translateY(-2px);box-shadow:0 0 12px rgba(179,136,255,.4),0 0 30px rgba(255,107,157,.2);background:linear-gradient(135deg,rgba(179,136,255,.28),rgba(255,107,157,.18))}
+
+/* ===== 布局 ===== */
+  .app{display:flex;height:calc(100vh - 44px);margin-top:44px;position:relative;z-index:2}
+  /* ===== 左侧栏 ===== */
+  .sidebar{width:240px;min-width:240px;background:var(--card);border-right:1px solid var(--glass-border);display:flex;flex-direction:column;backdrop-filter:blur(20px);overflow-y:auto}
+  .sidebar-header{padding:24px 20px 16px;border-bottom:1px solid var(--glass-border);text-align:center}
+  .sidebar-logo{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:6px}
+  .sidebar-logo h1{font-family:'ZCOOL KuaiLe',cursive;font-size:1.5rem;background:linear-gradient(135deg,var(--pink),var(--yellow),var(--cyan),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:titleShimmer 3s linear infinite;background-size:200% 100%;filter:drop-shadow(0 0 12px rgba(255,107,157,.4)) drop-shadow(0 0 24px rgba(79,195,247,.25));letter-spacing:2px}
+  @keyframes titleShimmer{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+  .sidebar-subtitle{color:var(--text2);font-size:.75rem;font-weight:300;letter-spacing:3px}
+  .sidebar-nav{flex:1;padding:12px 0}
+  .sidebar-cat{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;margin:2px 10px;border-radius:10px;cursor:pointer;transition:all .3s;font-size:.9rem;font-weight:500;color:var(--text2);position:relative}
+  .sidebar-cat:hover{background:var(--glass);color:var(--text)}
+  .sidebar-cat.active{background:var(--glass);color:var(--text);border:1px solid var(--glass-border)}
+  .sidebar-cat.active::before{content:'';position:absolute;left:-2px;top:50%;transform:translateY(-50%);width:3px;height:20px;border-radius:3px}
+  .sidebar-cat.cat-growth.active::before{background:var(--pink)}
+  .sidebar-cat.cat-culture.active::before{background:var(--orange)}
+  .sidebar-cat.cat-patriotism.active::before{background:#FF5252}
+  .sidebar-cat.cat-ai.active::before{background:var(--cyan)}
+  .sidebar-cat.cat-scenery.active::before{background:var(--green)}
+  .sidebar-cat-label{display:flex;align-items:center;gap:10px}
+  .sidebar-cat-count{font-size:.75rem;color:var(--text3)}
+  .sidebar-bottom{padding:12px 20px;border-top:1px solid var(--glass-border)}
+  .sidebar-vocab-btn{display:flex;align-items:center;gap:8px;padding:10px 16px;border-radius:8px;cursor:pointer;transition:all .3s;font-size:.85rem;color:var(--text2);border:1px solid var(--glass-border);text-align:center;justify-content:center}
+  .sidebar-vocab-btn:hover{color:var(--text);border-color:var(--purple);box-shadow:var(--neon-purple)}
+  .sidebar-vocab-btn.active{background:linear-gradient(135deg,var(--purple),var(--pink));color:#fff;border-color:transparent}
+	  .sidebar-cat .cat-actions{display:none;gap:4px;margin-left:auto}
+	  .sidebar-cat:hover .cat-actions{display:flex}
+	  .cat-action-btn{width:22px;height:22px;border-radius:50%;border:1px solid var(--glass-border);background:var(--glass);cursor:pointer;font-size:.6rem;display:flex;align-items:center;justify-content:center;transition:all .2s;color:var(--text3)}
+	  .cat-action-btn:hover{background:var(--glass);border-color:var(--text2);color:var(--text)}
+	  .cat-mgr-item{display:flex;align-items:center;gap:8px;padding:10px 14px;border:1px solid var(--glass-border);border-radius:var(--radius-sm);margin-bottom:8px;transition:all .3s}
+	  .cat-mgr-item:hover{border-color:var(--cyan)}
+	  .cat-mgr-item .cat-icon-input{width:42px;text-align:center;font-size:1.2rem;border:1px solid var(--glass-border);border-radius:8px;padding:6px;font-family:'Noto Sans SC',sans-serif;background:var(--bg);color:var(--text)}
+	  .cat-mgr-item .cat-name-input{flex:1;border:1px solid var(--glass-border);border-radius:8px;padding:8px 12px;font-family:'Noto Sans SC',sans-serif;font-size:.88rem;background:var(--bg);color:var(--text);min-width:100px}
+	  .cat-mgr-item .cat-name-input:focus,.cat-mgr-item .cat-icon-input:focus{outline:none;border-color:var(--cyan);box-shadow:var(--neon-blue)}
+	  .cat-mgr-item .cat-essay-count{font-size:.75rem;color:var(--text3);white-space:nowrap}
+	  .cat-mgr-delete{width:32px;height:32px;border-radius:50%;border:1px solid transparent;background:transparent;cursor:pointer;font-size:.9rem;display:flex;align-items:center;justify-content:center;transition:all .2s;color:var(--text3);flex-shrink:0}
+	  .cat-mgr-delete:hover{background:rgba(255,82,82,.12);border-color:rgba(255,82,82,.3);color:#FF5252}
+	  .badge-purple{background:linear-gradient(135deg,var(--purple),#7C4DFF)}
+	  .badge-yellow{background:linear-gradient(135deg,var(--yellow),#FF8F00)}
+	  .badge-teal{background:linear-gradient(135deg,#1DE9B6,#00BFA5)}
+	  .badge-rose{background:linear-gradient(135deg,#FF80AB,#F50057)}
+	  .sidebar-cat.cat-purple.active::before{background:var(--purple)}
+	  .sidebar-cat.cat-yellow.active::before{background:var(--yellow)}
+	  .sidebar-cat.cat-teal.active::before{background:#1DE9B6}
+	  .sidebar-cat.cat-rose.active::before{background:#FF80AB}
+
+  /* ===== 右侧主内容 ===== */
+  .content{flex:1;overflow-y:auto;padding:20px 30px 40px}
+  .content-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px}
+  .content-title{font-family:'ZCOOL KuaiLe',cursive;font-size:1.5rem;background:linear-gradient(135deg,var(--pink),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .btn-new{display:inline-flex;align-items:center;gap:6px;padding:10px 22px;border:1px solid var(--yellow);border-radius:50px;font-family:'Noto Sans SC',sans-serif;font-size:.88rem;font-weight:500;cursor:pointer;transition:all .3s;background:rgba(255,213,79,.1);color:var(--yellow)}
+  .btn-new:hover{transform:translateY(-2px);box-shadow:0 0 10px rgba(255,213,79,.35),0 0 30px rgba(255,213,79,.15);background:rgba(255,213,79,.18)}
+  .btn-back{display:inline-flex;align-items:center;gap:4px;padding:6px 14px;border:1px solid var(--glass-border);border-radius:50px;font-size:.82rem;cursor:pointer;transition:all .3s;color:var(--text2);background:var(--glass)}
+  .btn-back:hover{color:var(--text);border-color:var(--cyan)}
+
+  /* ===== 文章列表 ===== */
+  .essay-list{display:flex;flex-direction:column;gap:12px}
+  .essay-list-item{background:var(--card);border:1px solid var(--glass-border);border-radius:var(--radius);padding:20px 24px;cursor:pointer;transition:all .3s;animation:slideUp .5s ease}
+  .essay-list-item:hover{border-color:var(--cyan);box-shadow:var(--neon-blue);transform:translateY(-2px)}
+  .essay-list-item h3{font-size:1.1rem;font-weight:500;margin-bottom:6px}
+  .essay-list-item .essay-preview{color:var(--text2);font-size:.85rem;line-height:1.6;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .essay-list-item .essay-info{display:flex;gap:14px;font-size:.78rem;color:var(--text3);margin-top:8px;flex-wrap:wrap}
+  @keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+  .empty-state{text-align:center;padding:60px 20px;color:var(--text3)}
+  .empty-state-icon{font-size:3rem;margin-bottom:12px}
+  .empty-state p{font-size:.95rem}
+
+  /* ===== 文章详情页 ===== */
+  .essay-detail{background:var(--card);border:1px solid var(--glass-border);border-radius:var(--radius);padding:30px;animation:slideUp .5s ease;position:relative}
+  .essay-detail::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--pink-light),var(--blue-light),var(--purple),transparent)}
+  .detail-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:10px}
+  .detail-title{font-family:'ZCOOL KuaiLe',cursive;font-size:1.4rem;color:var(--text);flex:1}
+  .detail-badge{display:inline-block;padding:3px 12px;border-radius:20px;font-size:.74rem;font-weight:500;color:#fff}
+  .badge-growth{background:linear-gradient(135deg,var(--pink),#D81B60)}
+  .badge-culture{background:linear-gradient(135deg,var(--orange),#F57C00)}
+  .badge-patriotism{background:linear-gradient(135deg,#FF5252,#C62828)}
+  .badge-ai{background:linear-gradient(135deg,var(--cyan),#0288D1)}
+  .badge-scenery{background:linear-gradient(135deg,var(--green),#00897B)}
+  .detail-meta{display:flex;gap:12px;font-size:.8rem;color:var(--text2);margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--glass-border);flex-wrap:wrap}
+  .meta-item{display:flex;align-items:center;gap:4px}
+  .stat-num{font-weight:700;color:var(--cyan)}
+  .detail-body{line-height:2;font-size:1.02rem;text-align:justify}
+  .detail-body p{text-indent:2em;margin-bottom:14px}
+
+  /* ===== 写作弹窗 ===== */
+  .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(12px);z-index:100;justify-content:center;align-items:center}
+  .modal-overlay.show{display:flex;animation:fadeIn .3s}
+  @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+  .modal{background:var(--bg2);border:1px solid var(--glass-border);border-radius:var(--radius);padding:24px;max-width:800px;width:92%;max-height:88vh;display:flex;flex-direction:column;box-shadow:0 20px 60px rgba(0,0,0,.5);animation:popIn .4s cubic-bezier(.4,0,.2,1)}
+  @keyframes popIn{from{opacity:0;transform:scale(.92) translateY(20px)}to{opacity:1;transform:scale(1) translateY(0)}}
+  .modal::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--pink),var(--cyan),var(--purple),transparent)}
+  .modal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;gap:12px;flex-wrap:wrap}
+  .modal-header h3{font-family:'ZCOOL KuaiLe',cursive;font-size:1.2rem;background:linear-gradient(135deg,var(--pink),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .modal-body{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:14px}
+  .form-group{display:flex;flex-direction:column;gap:4px}
+  .form-group label{font-size:.82rem;font-weight:500;color:var(--text)}
+  .form-group input,.form-group textarea{width:100%;border:1px solid var(--glass-border);border-radius:8px;padding:10px 14px;font-family:'Noto Sans SC',sans-serif;font-size:.92rem;color:var(--text);background:var(--bg);resize:vertical}
+  .form-group input:focus,.form-group textarea:focus{outline:none;border-color:var(--cyan);box-shadow:var(--neon-blue)}
+  .form-group textarea{min-height:320px;line-height:1.9}
+  .form-row{display:flex;gap:12px}
+  .form-row .form-group{flex:1}
+  .modal-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:16px;flex-wrap:wrap}
+
+  /* ===== 积累词句 ===== */
+  .vocab-header{font-family:'ZCOOL KuaiLe',cursive;font-size:1.25rem;margin-bottom:4px;background:linear-gradient(135deg,var(--pink),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .vocab-subtitle{color:var(--text2);font-size:.86rem;margin-bottom:20px}
+  .vocab-section{margin-bottom:20px}
+  .vocab-section-title{font-weight:700;font-size:.92rem;margin-bottom:8px;padding-left:10px;border-left:3px solid;display:flex;align-items:center;gap:6px}
+  .vocab-section-title.cat-growth{border-left-color:var(--pink);color:var(--pink)}
+  .vocab-section-title.cat-culture{border-left-color:var(--orange);color:var(--orange)}
+  .vocab-section-title.cat-patriotism{border-left-color:#FF5252;color:#FF5252}
+  .vocab-section-title.cat-ai{border-left-color:var(--cyan);color:var(--cyan)}
+  .vocab-section-title.cat-scenery{border-left-color:var(--green);color:var(--green)}
+  .vocab-tags{display:flex;flex-wrap:wrap;gap:7px}
+  .vocab-tag{display:inline-flex;align-items:center;gap:4px;padding:4px 12px;border-radius:20px;font-size:.82rem;cursor:pointer;transition:all .3s;border:1px solid}
+  .vocab-tag:hover{transform:translateY(-2px);box-shadow:0 4px 14px rgba(0,0,0,.3)}
+  .tag-word{background:rgba(255,107,157,.1);border-color:rgba(255,107,157,.3);color:var(--pink)}
+  .tag-word:hover{border-color:var(--pink);box-shadow:var(--neon-pink)}
+  .tag-phrase{background:rgba(79,195,247,.1);border-color:rgba(79,195,247,.3);color:var(--blue)}
+  .tag-phrase:hover{border-color:var(--blue);box-shadow:var(--neon-blue)}
+  .tag-ai{background:rgba(179,136,255,.1);border-color:rgba(179,136,255,.3);color:var(--purple);border-style:dashed}
+  .tag-ai:hover{border-color:var(--purple);box-shadow:var(--neon-purple)}
+  .tag-source{font-size:.66rem;opacity:.5;margin-left:2px}
+  .vocab-empty{text-align:center;padding:36px;color:var(--text2)}
+  .vocab-empty-icon{font-size:2.8rem;margin-bottom:10px}
+
+  .tool-btn{display:inline-flex;align-items:center;gap:5px;padding:7px 14px;border:1px solid var(--glass-border);border-radius:50px;font-family:'Noto Sans SC',sans-serif;font-size:.8rem;font-weight:500;cursor:pointer;transition:all .3s;background:var(--glass);color:var(--text2);backdrop-filter:blur(10px)}
+  .tool-btn:hover{transform:translateY(-2px);color:var(--text);border-color:var(--cyan);box-shadow:var(--neon-blue)}
+  .btn-save:hover{border-color:var(--green);color:var(--green);box-shadow:0 0 8px rgba(105,240,174,.35)}
+  .btn-cancel:hover{border-color:var(--text3);color:var(--text)}
+  .btn-voice:hover,.btn-voice.recording{border-color:#CE93D8;color:#CE93D8;box-shadow:0 0 8px rgba(206,147,216,.35)}
+  .btn-voice.recording{animation:pulse 1.2s ease-in-out infinite}
+  @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(206,147,216,.5)}50%{box-shadow:0 0 0 10px rgba(206,147,216,0)}}
+  .voice-status{display:none;align-items:center;gap:6px;font-size:.8rem;color:#CE93D8}
+  .voice-status.show{display:flex}
+  .voice-wave{display:flex;align-items:center;gap:2px;height:18px}
+  .voice-wave span{width:3px;background:#CE93D8;border-radius:2px;animation:wave .6s ease-in-out infinite}
+  .voice-wave span:nth-child(1){height:7px;animation-delay:0s}
+  .voice-wave span:nth-child(2){height:12px;animation-delay:.1s}
+  .voice-wave span:nth-child(3){height:9px;animation-delay:.2s}
+  .voice-wave span:nth-child(4){height:15px;animation-delay:.3s}
+  .voice-wave span:nth-child(5){height:10px;animation-delay:.15s}
+  @keyframes wave{0%,100%{transform:scaleY(.5)}50%{transform:scaleY(1.3)}}
+
+  .toast{position:fixed;top:22px;right:22px;background:var(--bg2);border:1px solid var(--glass-border);border-radius:var(--radius-sm);padding:10px 20px;box-shadow:0 8px 28px rgba(0,0,0,.4);z-index:200;display:flex;align-items:center;gap:7px;font-weight:500;font-size:.86rem;transform:translateX(120%);transition:transform .4s cubic-bezier(.4,0,.2,1)}
+  .toast.show{transform:translateX(0)}
+  .toast-icon{font-size:1rem}
+
+
+	  /* ===== 批改标注 ===== */
+	  .anno-del{background:rgba(255,82,82,.22);text-decoration:line-through;text-decoration-color:#FF5252;text-decoration-thickness:2px;color:#FF8A80;border-radius:3px;padding:0 2px}
+	  .anno-ins{background:rgba(105,240,174,.18);color:#69F0AE;border-radius:3px;padding:0 2px;border-bottom:2px solid rgba(105,240,174,.5)}
+	  .revised-notice{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;background:rgba(255,171,64,.12);border:1px solid rgba(255,171,64,.3);border-radius:20px;font-size:.78rem;color:var(--orange);margin-bottom:12px}
+	  .btn-revise{display:inline-flex;align-items:center;gap:5px;padding:8px 18px;border:1px solid var(--orange);border-radius:50px;font-family:'Noto Sans SC',sans-serif;font-size:.82rem;font-weight:500;cursor:pointer;transition:all .3s;background:rgba(255,171,64,.1);color:var(--orange)}
+	  .btn-revise:hover{transform:translateY(-2px);box-shadow:0 0 10px rgba(255,171,64,.35),0 0 28px rgba(255,171,64,.15);background:rgba(255,171,64,.18)}
+	  .btn-ai{display:inline-flex;align-items:center;gap:4px;padding:5px 12px;border:1px solid var(--purple);border-radius:50px;font-size:.75rem;cursor:pointer;transition:all .3s;background:rgba(179,136,255,.08);color:var(--purple);flex-shrink:0}
+	  .btn-ai:hover{background:rgba(179,136,255,.18);box-shadow:var(--neon-purple);transform:translateY(-1px)}
+	  .btn-ai:disabled{opacity:.4;cursor:not-allowed;pointer-events:none}
+	  .revision-para{display:flex;flex-direction:column;gap:4px}
+	  .revision-para-label{font-size:.78rem;font-weight:500;color:var(--text2);display:flex;align-items:center;justify-content:space-between}
+	  .revision-textarea{width:100%;min-height:100px;border:1px solid var(--glass-border);border-radius:10px;padding:12px;font-family:'Noto Sans SC',sans-serif;font-size:.9rem;line-height:1.9;color:var(--text);background:var(--bg);resize:vertical;transition:border-color .3s}
+	  .revision-textarea:focus{outline:none;border-color:var(--orange);box-shadow:0 0 8px rgba(255,171,64,.2)}
+	  .revision-textarea.modified{border-color:rgba(255,171,64,.5);box-shadow:0 0 6px rgba(255,171,64,.15)}
+	  .detail-toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+	  .btn-view-original{display:inline-flex;align-items:center;gap:5px;padding:6px 14px;border:1px solid var(--glass-border);border-radius:50px;font-size:.78rem;cursor:pointer;transition:all .3s;color:var(--text2);background:var(--glass)}
+	  .btn-view-original:hover{color:var(--text);border-color:var(--text2)}
+	  .btn-view-original.active{color:var(--orange);border-color:var(--orange);background:rgba(255,171,64,.08)}
+  @media(max-width:768px){
+    .app{flex-direction:column}
+    .sidebar{width:100%;min-width:auto;flex-direction:row;overflow-x:auto;border-right:none;border-bottom:1px solid var(--glass-border)}
+    .sidebar-header{display:none}
+    .sidebar-nav{display:flex;padding:8px;gap:4px}
+    .sidebar-cat{padding:8px 12px;font-size:.78rem;white-space:nowrap;flex-shrink:0}
+    .sidebar-bottom{display:none}
+    .content{padding:14px 16px 30px}
+  }
+</style>
+</head>
+<body>
+
+<!-- 登录/注册页 -->
+<div class="login-overlay" id="loginOverlay">
+  <div class="login-container">
+    <div class="login-header">
+      <div class="login-logo">
+        <svg width="52" height="52" viewBox="0 0 120 120" fill="none">
+          <rect x="22" y="32" width="76" height="52" rx="4" fill="#0e1a30" stroke="url(#lbsg)" stroke-width="2"/>
+          <line x1="34" y1="44" x2="86" y2="44" stroke="#FF6B9D" stroke-width="1.5" opacity=".5"/>
+          <line x1="34" y1="54" x2="78" y2="54" stroke="#4FC3F7" stroke-width="1.5" opacity=".5"/>
+          <line x1="34" y1="64" x2="82" y2="64" stroke="#B388FF" stroke-width="1.5" opacity=".5"/>
+          <rect x="14" y="26" width="12" height="64" rx="6" fill="url(#lbrg)"/>
+          <ellipse cx="60" cy="28" rx="22" ry="14" fill="url(#lbbg)"/>
+          <defs>
+            <linearGradient id="lbsg" x1="22" y1="28" x2="98" y2="84"><stop offset="0%" stop-color="#FF6B9D"/><stop offset="100%" stop-color="#4FC3F7"/></linearGradient>
+            <linearGradient id="lbrg" x1="14" y1="22" x2="26" y2="90"><stop offset="0%" stop-color="#8D6E63"/><stop offset="100%" stop-color="#5D4037"/></linearGradient>
+            <radialGradient id="lbbg" cx="50%" cy="40%"><stop offset="0%" stop-color="#FFF8E1"/><stop offset="100%" stop-color="#FFCC80"/></radialGradient>
+          </defs>
+        </svg>
+        <h1>我的AI作文集</h1>
+      </div>
+      <p class="login-subtitle">记录思考 · 打磨文字 · 积累成长</p>
+    </div>
+
+    <!-- 登录方式切换 -->
+    <div class="login-tabs">
+      <button class="login-tab active" onclick="switchLoginTab('phone')" id="tabPhone">📱 手机号登录</button>
+      <button class="login-tab" onclick="switchLoginTab('invite')" id="tabInvite">🎫 邀请码</button>
+    </div>
+
+    <!-- 手机号登录表单 -->
+    <div class="login-form" id="formPhone">
+      <div class="form-group">
+        <label>手机号</label>
+        <input id="loginPhone" placeholder="请输入11位手机号" maxlength="11" type="tel">
+      </div>
+      <div class="form-group">
+        <label>密码</label>
+        <input id="loginPassword" placeholder="请输入密码（6-16位）" type="password" maxlength="16">
+      </div>
+      <div id="loginConfirmPasswordGroup" class="form-group" style="display:none">
+        <label>确认密码</label>
+        <input id="loginConfirmPassword" placeholder="请再次输入密码" type="password" maxlength="16">
+      </div>
+      <button class="login-submit" onclick="handlePhoneLogin()" id="btnPhoneSubmit">登 录</button>
+      <div class="login-switch-mode">
+        <span id="loginModeHint">还没有账号？</span>
+        <a href="javascript:void(0)" onclick="toggleLoginMode()" id="loginModeLink">立即注册</a>
+        <span style="margin:0 8px;color:var(--text3)">|</span>
+        <a href="javascript:void(0)" onclick="showForgotPassword()" id="forgotPwdLink">忘记密码</a>
+      </div>
+    </div>
+
+    <!-- 邀请码表单 -->
+    <div class="login-form" id="formInvite" style="display:none">
+      <div class="form-group">
+        <label>邀请码</label>
+        <input id="inviteCode" placeholder="请输入邀请码" maxlength="10">
+      </div>
+      <button class="login-submit invite-submit" onclick="handleInviteLogin()">进 入</button>
+      <p class="login-hint">输入邀请码即可直接访问，无需注册</p>
+    </div>
+
+    <!-- 忘记密码表单 -->
+    <div class="login-form" id="formForgotPassword" style="display:none">
+      <p style="text-align:center;color:var(--text2);font-size:.84rem;margin-bottom:4px">重置密码</p>
+      <div class="form-group">
+        <label>手机号</label>
+        <input id="forgotPhone" placeholder="请输入已注册的手机号" maxlength="11" type="tel">
+      </div>
+      <div class="form-group">
+        <label>新密码</label>
+        <input id="forgotNewPassword" placeholder="请输入新密码（6-16位）" type="password" maxlength="16">
+      </div>
+      <div class="form-group">
+        <label>确认新密码</label>
+        <input id="forgotConfirmPassword" placeholder="请再次输入新密码" type="password" maxlength="16">
+      </div>
+      <div id="forgotError" class="login-error"></div>
+      <button class="login-submit" onclick="handleResetPassword()">重 置 密 码</button>
+      <div class="login-switch-mode">
+        <a href="javascript:void(0)" onclick="hideForgotPassword()">← 返回登录</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 顶部工具栏 -->
+<div class="topbar">
+  <span class="topbar-brand">我的AI作文集</span>
+  <div style="display:flex;align-items:center;gap:12px">
+    <span id="topbarUser" style="font-size:.78rem;color:var(--text2)"></span>
+    <button class="tool-btn" onclick="handleLogout()" style="font-size:.75rem;padding:5px 12px;border-color:rgba(255,82,82,.4);color:#FF8A80">退出</button>
+  </div>
+</div>
+
+<canvas id="particles"></canvas>
+<div class="glow-orb o1"></div><div class="glow-orb o2"></div>
+
+<div class="toast" id="toast"><span class="toast-icon" id="toastIcon"></span><span id="toastMsg"></span></div>
+
+<div class="app">
+  <!-- 左侧栏 -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        <svg width="42" height="42" viewBox="0 0 120 120" fill="none">
+          <rect x="22" y="32" width="76" height="52" rx="4" fill="#0e1a30" stroke="url(#sbsg)" stroke-width="2"/>
+          <line x1="34" y1="44" x2="86" y2="44" stroke="#FF6B9D" stroke-width="1.5" opacity=".5"/>
+          <line x1="34" y1="54" x2="78" y2="54" stroke="#4FC3F7" stroke-width="1.5" opacity=".5"/>
+          <line x1="34" y1="64" x2="82" y2="64" stroke="#B388FF" stroke-width="1.5" opacity=".5"/>
+          <rect x="14" y="26" width="12" height="64" rx="6" fill="url(#sbrg)"/>
+          <circle cx="20" cy="26" r="6" fill="#FF6B9D"/><circle cx="20" cy="90" r="6" fill="#FF6B9D"/>
+          <rect x="94" y="26" width="12" height="64" rx="6" fill="url(#sbrg)"/>
+          <circle cx="100" cy="26" r="6" fill="#4FC3F7"/><circle cx="100" cy="90" r="6" fill="#4FC3F7"/>
+          <ellipse cx="60" cy="28" rx="22" ry="14" fill="url(#sbbg)"/>
+          <path d="M50 14 Q48 6 52 0" stroke="white" stroke-width="1.5" fill="none" opacity=".35" stroke-linecap="round"><animate attributeName="d" values="M50 14 Q48 6 52 0;M50 14 Q52 6 48 0;M50 14 Q48 6 52 0" dur="3s" repeatCount="indefinite"/></path>
+          <path d="M60 12 Q58 4 62 -2" stroke="white" stroke-width="1.5" fill="none" opacity=".28" stroke-linecap="round"><animate attributeName="d" values="M60 12 Q58 4 62 -2;M60 12 Q62 4 58 -2;M60 12 Q58 4 62 -2" dur="2.5s" repeatCount="indefinite"/></path>
+          <defs>
+            <linearGradient id="sbsg" x1="22" y1="28" x2="98" y2="84"><stop offset="0%" stop-color="#FF6B9D"/><stop offset="100%" stop-color="#4FC3F7"/></linearGradient>
+            <linearGradient id="sbrg" x1="14" y1="22" x2="26" y2="90"><stop offset="0%" stop-color="#8D6E63"/><stop offset="100%" stop-color="#5D4037"/></linearGradient>
+            <radialGradient id="sbbg" cx="50%" cy="40%"><stop offset="0%" stop-color="#FFF8E1"/><stop offset="100%" stop-color="#FFCC80"/></radialGradient>
+          </defs>
+        </svg>
+        <h1>我的AI作文集</h1>
+      </div>
+      <p class="sidebar-subtitle">精选范文 · 自由创作</p>
+    </div>
+    <nav class="sidebar-nav" id="sidebarNav">
+      <!-- Categories rendered dynamically by renderSidebar() -->
+    </nav>
+    <div class="sidebar-bottom">
+      <div class="sidebar-vocab-btn" id="vocabTabBtn" onclick="toggleVocab()">✨ 作文积累词句</div>
+      <div class="sidebar-vocab-btn" id="catMgrBtn" onclick="openCategoryMgr()" style="margin-top:8px">⚙️ 分类管理</div>
+    </div>
+  </aside>
+
+  <!-- 右侧内容 -->
+  <main class="content" id="contentArea"></main>
+</div>
+
+<!-- 写作弹窗 -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal" id="modal">
+    <div class="modal-header"><h3 id="modalTitle">新增文章</h3></div>
+    <div class="modal-body">
+      <div class="form-group"><label>文章标题</label><input id="newTitle" placeholder="请输入文章标题..."></div>
+      <div class="form-group"><label>署名</label><input id="newAuthor" placeholder="佚名"></div>
+      <div class="form-group"><label>正文内容（直接打字输入，也可使用语音）</label><textarea id="newContent" placeholder="在此输入文章内容，建议800-1000字。每输入完一段按回车换行，段落将自动显示缩进。"></textarea></div>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;margin-top:4px">
+      <button class="tool-btn btn-voice" id="modalVoiceBtn" onclick="toggleModalVoice()" style="border-color:#CE93D8;color:#CE93D8">🎤 语音输入</button>
+      <span class="voice-status" id="modalVoiceStatus">
+        <span class="voice-wave"><span></span><span></span><span></span><span></span><span></span></span>
+        <span>正在聆听…</span>
+      </span>
+    </div>
+    <div class="modal-actions">
+      <button class="tool-btn btn-cancel" onclick="closeModalDirect()">取消</button>
+      <button class="tool-btn btn-save" onclick="saveNewEssay()">💾 保存文章</button>
+    </div>
+  </div>
+</div>
+
+<!-- AI创作弹窗 -->
+<div class="modal-overlay" id="aiCreateOverlay" onclick="closeAICreateModal(event)">
+  <div class="modal" id="aiCreateModal" style="max-width:700px">
+    <div class="modal-header">
+      <h3>🤖 AI 智能创作</h3>
+      <button class="tool-btn btn-cancel" onclick="closeAICreateModalDirect()" style="font-size:.78rem">✕</button>
+    </div>
+    <div class="modal-body" style="gap:10px">
+      <div class="form-group"><label>📝 作文题目</label><input id="aiTitle" placeholder="例如：科技改变生活"></div>
+      <div class="form-row">
+        <div class="form-group"><label>💡 中心思想</label><input id="aiTheme" placeholder="例如：科技发展对日常生活的影响与思考"></div>
+        <div class="form-group"><label>📏 目标字数</label><select id="aiWordCount" style="width:100%;border:1px solid var(--glass-border);border-radius:8px;padding:10px 14px;font-family:'Noto Sans SC',sans-serif;font-size:.92rem;color:var(--text);background:var(--bg)">
+          <option value="600">600 字</option>
+          <option value="800" selected>800 字</option>
+          <option value="1000">1000 字</option>
+          <option value="1200">1200 字</option>
+        </select></div>
+      </div>
+      <div class="form-group"><label>📋 文体要求</label><select id="aiGenre" style="width:100%;border:1px solid var(--glass-border);border-radius:8px;padding:10px 14px;font-family:'Noto Sans SC',sans-serif;font-size:.92rem;color:var(--text);background:var(--bg)">
+        <option value="argumentative">议论文</option>
+        <option value="narrative">记叙文</option>
+        <option value="prose">散文</option>
+      </select></div>
+      <div class="form-group"><label>🎯 收录分类</label><select id="aiCategory" style="width:100%;border:1px solid var(--glass-border);border-radius:8px;padding:10px 14px;font-family:'Noto Sans SC',sans-serif;font-size:.92rem;color:var(--text);background:var(--bg)"></select></div>
+      <div id="aiGenStatus" style="display:none;text-align:center;padding:16px;color:var(--purple);font-size:.88rem">
+        <span style="animation:pulse 1s infinite">🤖 AI正在创作中...</span>
+      </div>
+      <div id="aiResult" style="display:none">
+        <div class="form-group"><label>📄 生成结果（可编辑）</label><textarea id="aiContent" style="min-height:280px;line-height:1.9"></textarea></div>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="tool-btn btn-cancel" onclick="closeAICreateModalDirect()">取消</button>
+      <button class="tool-btn btn-ai" onclick="aiGenerate()" id="aiGenBtn" style="font-size:.85rem;padding:8px 20px">🤖 开始创作</button>
+      <button class="tool-btn btn-save" onclick="saveAIGeneratedEssay()" id="aiSaveBtn" style="display:none">💾 保存到作文集</button>
+    </div>
+  </div>
+</div>
+
+<!-- 分类管理弹窗 -->
+<div class="modal-overlay" id="catMgrOverlay" onclick="closeCategoryMgr(event)">
+  <div class="modal" id="catMgrModal" style="max-width:560px">
+    <div class="modal-header">
+      <h3>⚙️ 分类管理</h3>
+      <button class="tool-btn btn-cancel" onclick="closeCategoryMgrDirect()" style="font-size:.78rem">✕</button>
+    </div>
+    <div class="modal-body" id="catMgrBody" style="max-height:54vh">
+      <!-- Category list injected by JS -->
+    </div>
+    <div class="modal-actions">
+      <button class="tool-btn btn-cancel" onclick="closeCategoryMgrDirect()">关闭</button>
+      <button class="tool-btn btn-save" onclick="addNewCategory()">➕ 新增分类</button>
+    </div>
+  </div>
+</div>
+
+<!-- 批改弹窗 -->
+<div class="modal-overlay" id="revisionOverlay" onclick="closeRevisionModal(event)">
+  <div class="modal" id="revisionModal" style="max-width:900px">
+    <div class="modal-header">
+      <h3 id="revisionTitle">一键批改</h3>
+      <button class="tool-btn btn-cancel" onclick="closeRevisionModalDirect()" style="font-size:.78rem">✕</button>
+    </div>
+    <div class="modal-body" id="revisionBody" style="max-height:58vh">
+      <!-- Paragraph textareas injected by JS -->
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;margin-top:4px;flex-wrap:wrap">
+      <button class="tool-btn btn-voice" id="revisionVoiceBtn" onclick="toggleRevisionVoice()" style="border-color:#CE93D8;color:#CE93D8">🎤 语音输入</button>
+      <span class="voice-status" id="revisionVoiceStatus">
+        <span class="voice-wave"><span></span><span></span><span></span><span></span><span></span></span>
+        <span>正在聆听…</span>
+      </span>
+    </div>
+    <div class="modal-actions">
+      <button class="tool-btn btn-cancel" onclick="closeRevisionModalDirect()">取消</button>
+      <button class="tool-btn btn-ai" onclick="aiPolishAll()" style="font-size:.8rem;padding:7px 16px">🤖 全部AI润色</button>
+      <button class="tool-btn btn-save" onclick="saveRevision()">💾 保存批改</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ===== 粒子背景 =====
+(function(){
+  const c=document.getElementById('particles'),ctx=c.getContext('2d');let w,h,pts=[];
+  function resize(){w=c.width=innerWidth;h=c.height=innerHeight;pts=[];for(let i=0;i<70;i++){const s=Math.random()>.5;pts.push({x:Math.random()*w,y:Math.random()*h,vx:(Math.random()-.5)*(s?.05:.2),vy:(Math.random()-.5)*(s?.05:.2),r:s?Math.random()*1.5+.5:Math.random()*2.5+.8,color:['rgba(255,107,157,','rgba(79,195,247,','rgba(179,136,255,','rgba(0,229,255,','rgba(105,240,174,','rgba(255,213,79,'][Math.floor(Math.random()*6)],star:s})}}
+  resize();addEventListener('resize',resize);
+  function draw(){ctx.clearRect(0,0,w,h);pts.forEach(p=>{p.x+=p.vx;p.y+=p.vy;if(p.x<0)p.x=w;if(p.x>w)p.x=0;if(p.y<0)p.y=h;if(p.y>h)p.y=0;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);const a=p.star?(.45+.35*Math.sin(Date.now()*.002+p.x)):(.25+.15*Math.sin(Date.now()*.001));ctx.fillStyle=p.color+a+')';ctx.fill();if(p.star){ctx.beginPath();ctx.arc(p.x,p.y,p.r*3,0,Math.PI*2);ctx.fillStyle=p.color+.07+')';ctx.fill()}});
+  for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++){if(pts[i].star||pts[j].star)continue;const d=Math.hypot(pts[i].x-pts[j].x,pts[i].y-pts[j].y);if(d<100){ctx.beginPath();ctx.moveTo(pts[i].x,pts[i].y);ctx.lineTo(pts[j].x,pts[j].y);ctx.strokeStyle='rgba(255,255,255,'+(.05*(1-d/100))+')';ctx.stroke()}}
+  requestAnimationFrame(draw)}draw()
+})();
+
+// ===== 数据模型 =====
+const defaultCategoryEssays = {
+  growth: {
+    name: '成长感悟', badge: '成长感悟', badgeClass: 'badge-growth', icon: '🌱',
+    essays: [{ id: 'g1', title: '独行的重量', author: '佚名', date: '2026-05',
+      content: `<p>庄子云："独与天地精神往来。"少年时读此句，只觉孤高飘渺，及至高中，方知"独行"二字，字字千钧。</p><p>我曾是个害怕独处的人。食堂吃饭要拉伴，放学回家要等人，连课间去洗手间都要结个队。仿佛一个人出现在公共空间里，本身就是一种过错。那时候的我，把"合群"当作生存法则，把"孤独"视为性格缺陷。殊不知，叔本华早有箴言："一个人只有在独处时才能成为自己。"</p><p>转折发生在高二上学期。我报名参加了学校的辩论队，赛前准备需要大量独立阅读和思考。队友们各有分工，我的任务是梳理逻辑框架——这意味着我必须独自面对几十页材料，在海量信息中找到那条隐秘的论证线索。最初几天，我坐立不安，总想找人说话，总想打开手机看看群聊消息。但渐渐地，当我的思路第一次在无人打扰的静默中贯通，那种豁然开朗的震颤，像极了王阳明龙场悟道时的"忽若有见"。</p><p>我开始有意识地留出独处的时间。每天晚自习后，在操场走两圈，不看手机，不与人语，只听风声和自己脚步的节奏。那些在喧闹中模糊的念头，在独处时竟变得异常清晰。我忽然明白了，为什么苏格拉底要在雅典街头独自行走，为什么梭罗要独居瓦尔登湖畔——他们不是在逃避人群，而是在奔赴一场与自我的深谈。</p><p>当然，独行并非与世隔绝。真正的成长，是在独处中积蓄力量，再于人群中从容释放。正如那古松，根须独自深扎岩缝，枝叶却为众人撑起阴凉。独处教会我倾听内心的声音，合群教会我回应世界的呼唤，二者缺一不可。</p><p>如今我依然珍惜友谊，依然享受热闹，但我不再害怕一个人吃饭、一个人走路、一个人在图书馆坐到闭馆。因为我知道，那些独行的时刻，恰是灵魂拔节生长的时刻。鲁迅说："世上本没有路，走的人多了，也便成了路。"而我想说，有些路，必须一个人走，才能走出属于自己的方向。</p><p>少年人当有独行的勇气。不必惧寂寞，不必畏长夜。独行者，行远路；独思者，得真知。当你学会与孤独握手言和，你便拥有了整个天地。</p>`,
+      goodWords: ['字字千钧', '豁然开朗', '箴言', '拔节生长', '坐立不安'],
+      goodPhrases: ['独与天地精神往来', '一个人只有在独处时才能成为自己', '有些路，必须一个人走，才能走出属于自己的方向']
+    }]
+  },
+  culture: {
+    name: '传统文化', badge: '传统文化', badgeClass: 'badge-culture', icon: '🏮',
+    essays: [{ id: 'c1', title: '窑火未熄', author: '佚名', date: '2026-04',
+      content: `<p>《考工记》有言："天有时，地有气，材有美，工有巧，合此四者，然后可以为良。"千年以降，这四句话刻在每一座古窑的烟囱上，也刻在每一个手艺人的骨血里。</p><p>我的家乡在江西景德镇。从小到大，我见过太多窑火——不是那种旅游景点的表演式烧窑，而是凌晨三点还在轰鸣的龙窑，是匠人用几十年光阴守护的柴窑。火光映在父亲脸上的时候，他眼角的皱纹里都藏着一层釉色。他说，烧窑是"看天吃饭"的活儿，温度差一度，气氛偏一分，出来的就是天壤之别。这话我信，因为我亲眼见过一窑三百件瓷器，开窑后完好的不过寥寥数十。</p><p>可这世上偏偏有人愿意为那几十件完好的瓷器，耗尽一生。我的师父——一个做了四十年青花的老人，至今仍用最古老的方法调釉、画线、入窑。他画的花鸟，不是照着图谱描的，而是从几十年观察自然中得来的。一只麻雀站在枝头，翅膀的弧度、尾羽的长度、爪子扣住树皮的力度，都有一套口耳相传的分寸。他说："机器画得再像，也画不出麻雀在风里站不稳的那个劲儿。"</p><p>这话让我想起柳宗元在《梓人传》中写的："彼将舍其手艺，专其心智。"真正的匠人，手艺只是表象，心智才是根本。他们用双手感知泥土的呼吸，用眼睛丈量火焰的脾气，用一生的时间去理解一个道理——美，从来不是速成的。</p><p>然而时代的洪流不讲情面。3D打印陶瓷、AI生成纹样、流水线批量生产……当效率成为唯一的标尺，慢工出细活便成了不合时宜的执拗。我问过师父怕不怕被淘汰，他只说了一句："窑火不会熄的，只要还有人愿意等。"</p><p>我终于明白，传统文化从来不是博物馆里的标本，而是活着的火焰。它需要人去添柴，需要人去守夜，需要人在所有人都奔向快的时候，还愿意慢下来。正如那龙窑里的火，外面看不见光，里面却烧着一千三百度。</p><p>薪火相传，传的不是技艺本身，而是那份"合此四者然后可以为良"的敬畏。这敬畏在，窑火便不熄；窑火不熄，文明便不绝。</p>`,
+      goodWords: ['天壤之别', '口耳相传', '执拗', '薪火相传', '不合时宜'],
+      goodPhrases: ['天有时地有气材有美工有巧', '美从来不是速成的', '外面看不见光里面却烧着一千三百度']
+    }]
+  },
+  patriotism: {
+    name: '家国情怀', badge: '家国情怀', badgeClass: 'badge-patriotism', icon: '🇨🇳',
+    essays: [{ id: 'p1', title: '种子与大地', author: '佚名', date: '2026-03',
+      content: `<p>艾青写道："为什么我的眼里常含泪水？因为我对这土地爱得深沉。"年少时读不懂这句诗，以为那只是诗人的矫情。直到那年冬天，我站在东北黑土地上，零下三十度的风像刀子一样割在脸上，才真正理解了"土地"两个字的分量。</p><p>那是爷爷的故乡。爷爷十七岁离开那片黑土地，南下参军，此后再未回乡。他生前很少提起故乡，只在每年除夕的饺子端上桌时，会沉默片刻，然后说一句："北方的饺子，皮要厚，馅要大，才扛冻。"这句话我听了十几年，直到站在他出生的那座村庄，看着无边无际的玉米地被大雪覆盖，才恍然明白——那不是在说饺子，那是在说他离开半个世纪仍念念不忘的北方。</p><p>顾炎武说"天下兴亡，匹夫有责"，这话被写在无数教室的墙上，却少有人真正掂量过"匹夫"二字的重量。所谓匹夫，不过是千千万万普通人中的某一个。他们不是战场上的将军，不是史书中的功臣，只是默默种地、做工、守岛、戍边的平凡人。但正是这些平凡人，构成了一个国家最坚实的底座。</p><p>我在酒泉认识一位退休工程师，他参与了从"东方红一号"到"神舟"系列的全部发射任务。五十年，他只回过六次老家。我问他值不值，他指着发射塔说："你看那火箭升空的时候，尾焰照亮的是整个中国。"那一刻，我忽然想起了《离骚》中的句子——"亦余心之所善兮，虽九死其犹未悔。"屈原两千年前写下的执念，至今仍在每个默默奉献的中国人血脉中流淌。</p><p>我们这一代人，生在盛世，长于安宁，很容易把一切当作理所当然。但历史不会因为被遗忘就停止回响。那些埋在大漠黄沙下的青春，那些隐入尘烟的姓名，那些在风雪中站了一辈子的身影，都是我们脚下这片土地的养分。</p><p>种子不会忘记大地。正如我们不该忘记来路。每一粒种子都带着泥土的记忆，每一个中国人都承载着先辈的期许。心中有根，脚下有土，则无论走多远，都知道回家的方向。</p><p>这，便是我理解的家国情怀——不是口号，不是仪式，而是种子对大地最本能的眷恋。</p>`,
+      goodWords: ['分量', '恍然', '隐入尘烟', '执念', '眷恋'],
+      goodPhrases: ['为什么我的眼里常含泪水因为我对这土地爱得深沉', '亦余心之所善兮虽九死其犹未悔', '种子不会忘记大地']
+    }]
+  },
+  ai: {
+    name: 'AI科技创新', badge: 'AI科技创新', badgeClass: 'badge-ai', icon: '🤖',
+    essays: [{ id: 'a1', title: '镜中之镜', author: '佚名', date: '2026-05',
+      content: `<p>柏拉图的洞穴寓言里，囚徒们背对火光，将墙壁上的影子当作全部的真实。如果柏拉图活在今天，他大概会把AI视为另一面墙壁——我们对着它投射自己的智识，又将它折射回来的影像奉为真理。镜中之镜，幻影叠幻影，谁还记得回头看一看那团火？</p><p>这不是危言耸听。当AI可以写出结构严谨的议论文、生成以假乱真的画作、谱出催人泪下的旋律，人类认知的边界正在被一寸寸蚕食。我身边的同学，有人用AI写周记，有人用AI做翻译，有人甚至让AI代写情书。我们正在把"思考"这件事，一点点外包给算法。表面上看，我们变得更高效了；实际上，我们正在丧失最珍贵的能力——在不确定中摸索、在困惑中顿悟、在失败中重建认知的那种能力。</p><p>王阳明说"知行合一"，知而不行，只是未知。同理，想而不做，只是未想。当我们习惯于向AI索取答案，大脑便会悄悄偷懒——既然三秒就能得到结果，何必花三天去思考？但恰恰是那三天的苦思冥想，才是思维真正生长的过程。就像肌肉需要阻力才能强壮，智慧需要困难才能深邃。AI替我们移除了困难，也替我们移除了成长。</p><p>但这不意味着我们要拒绝AI。历史上每一次技术革命——印刷术、蒸汽机、互联网——都曾引发类似的恐慌，而最终，人类都学会了与新技术共存。关键在于，我们是否清楚自己不可替代的部分是什么。AI可以模拟逻辑，却无法体验困惑；可以生成文本，却无法产生真实的渴望；可以识别模式，却无法理解一个眼神里的千言万语。它是一面极致的镜子，映照出我们投喂给它的一切，但镜子本身，没有灵魂。</p><p>真正危险的不是AI变得像人，而是人变得像AI。当我们开始用算法的逻辑思考，用数据的框架感受，用效率的标尺衡量一切，我们就主动走进了柏拉图的洞穴，心甘情愿地面对墙壁，把影子当作真实。</p><p>打破洞穴的方法很简单，也很困难——转过身去，直视火光。那火光，就是人类独有的东西：好奇心、同理心、对意义的追问、对美的原始冲动。这些东西，AI学不会，也无需学会，因为它们从来不是被"学会"的，而是被"活出来"的。</p><p>在镜中看见镜，在AI中看见人。这面镜子越明亮，我们越该清醒：它照出的是我们的倒影，而非我们的替代。认清这一点，便是走出洞穴的第一步。</p>`,
+      goodWords: ['蚕食', '危言耸听', '深邃', '顿悟'],
+      goodPhrases: ['镜中之镜幻影叠幻影', '知行合一知而不行只是未知', '真正危险的不是AI变得像人而是人变得像AI']
+    }]
+  },
+  scenery: {
+    name: '景色心情', badge: '景色心情', badgeClass: 'badge-scenery', icon: '🌸',
+    essays: [{ id: 's1', title: '雪落无声', author: '佚名', date: '2026-01',
+      content: `<p>柳宗元写"千山鸟飞绝，万径人踪灭"，那是被贬永州后的孤绝。而我所见之雪，虽无那份政治上的放逐之痛，却另有一番少年心事，在天地苍茫中，如雪落无声，却满地银白。</p><p>那是高三的寒假，我独自回了外婆家。小城在太行山东麓，四面环山，冬天的风从山口灌进来，像是从远古吹来的叹息。到达那天恰逢大雪，我从火车上下来，踩进没过脚踝的积雪，整个世界白得像一张还没落墨的宣纸。张岱在《湖心亭看雪》中写"雾凇沆砀，天与云与山与水，上下一白"，我此刻所见，正是这般光景——不是风景画里的精致留白，而是大自然把一切都抹去后的坦荡。</p><p>外婆家的院子里有棵老枣树，夏天的枣树结满果实，热热闹闹；此刻却只剩虬枝横斜，像一位老人张开的手臂，接住了满天的雪。我站在廊檐下看那棵树，忽然想起苏轼的"拣尽寒枝不肯栖，寂寞沙洲冷"。苏轼写的是孤鸿，我看到的却是那棵枣树——它不是不肯栖，而是无处可栖，但它依旧站得笔直，枝干上覆着雪，反而比繁叶满枝时更有风骨。</p><p>雪越下越大。我裹着棉袄走出院门，沿着村后的小路往山上走。脚下的雪发出咯吱咯吱的声响，是这寂静天地间唯一的音符。远处的山峦在雪雾中若隐若现，像一幅被水洇开的淡墨山水。走到半山腰，我停下来回望——小城的灯火透过雪幕亮着，星星点点，像冬天里不肯熄灭的暖意。那一刻，我忽然理解了为什么古人偏爱"雪夜访戴"——王子猷乘舟一夜，到了门口却折返，说"吾本乘兴而行，兴尽而返，何必见戴？"不是雪景有多美，而是那个在雪中独行的自己，比任何时候都更清醒。</p><p>回到外婆家，炉火正旺。外婆端来一碗小米粥，热气升腾，模糊了窗外的雪。我捧着碗，觉得人间最温暖的事，不过是大雪封山时，屋里有一碗热粥、一炉旺火、一个等你回来的人。</p><p>雪落无声，却胜有声。它用沉默覆盖了世间的喧嚣，让人终于听见了自己内心的声音。正如那句话——大音希声，大象无形。最深的感触，往往在万籁俱寂时才降临。</p>`,
+      goodWords: ['苍茫', '虬枝横斜', '风骨', '万籁俱寂', '沆砀'],
+      goodPhrases: ['千山鸟飞绝万径人踪灭', '大音希声大象无形', '雪落无声却胜有声', '最深的感触往往在万籁俱寂时才降临']
+    }]
+  }
+};
+
+let essays = {};
+let currentCat = 'growth';
+let currentEssayId = null;
+let showingVocab = false;
+let voiceRecognition = null;
+let isVoiceRecording = false;
+
+function addId() { return Date.now().toString(36) + Math.random().toString(36).substring(2,6); }
+
+function getStorageKey() {
+  const uid = getCurrentUserId();
+  return 'zm_essays_' + (uid || 'default');
+}
+
+function initData() {
+  const key = getStorageKey();
+  const saved = localStorage.getItem(key);
+  if (saved) {
+    try {
+      const parsed = JSON.parse(saved);
+      Object.keys(defaultCategoryEssays).forEach(k => {
+        if (parsed[k] && parsed[k].essays && parsed[k].essays.length) {
+          essays[k] = parsed[k];
+        } else {
+          essays[k] = JSON.parse(JSON.stringify(defaultCategoryEssays[k]));
+        }
+      });
+      // Also load any custom categories that aren't in defaults
+      Object.keys(parsed).forEach(k => {
+        if (!essays[k]) essays[k] = parsed[k];
+      });
+    } catch(e) {
+      essays = JSON.parse(JSON.stringify(defaultCategoryEssays));
+    }
+  } else {
+    essays = JSON.parse(JSON.stringify(defaultCategoryEssays));
+  }
+  updateCategoryCounts();
+  if (!essays[currentCat]) currentCat = Object.keys(essays)[0] || 'growth';
+  renderSidebar();
+}
+
+function saveData() {
+  const key = getStorageKey();
+  localStorage.setItem(key, JSON.stringify(essays));
+  updateCategoryCounts();
+}
+
+function updateCategoryCounts() {
+  Object.keys(essays).forEach(cat => {
+    const el = document.getElementById('count-' + cat);
+    if (el) el.textContent = essays[cat].essays.length;
+  });
+}
+
+function countWords(html) {
+  const t = document.createElement('div'); t.innerHTML = html;
+  return t.textContent.replace(/\s/g, '').length;
+}
+
+function getPlainPreview(html, len) {
+  const t = document.createElement('div'); t.innerHTML = html;
+  const text = t.textContent.replace(/\s/g, '').substring(0, len);
+  return text;
+}
+
+// ===== 导航 =====
+function switchCategory(cat) {
+  currentCat = cat;
+  currentEssayId = null;
+  showingVocab = false;
+  const vocBtn = document.getElementById('vocabTabBtn');
+  if (vocBtn) vocBtn.classList.remove('active');
+  document.querySelectorAll('.sidebar-cat').forEach(el => {
+    el.classList.toggle('active', el.dataset.cat === cat);
+  });
+  renderContent();
+}
+
+function toggleVocab() {
+  showingVocab = true;
+  currentEssayId = null;
+  const vocBtn = document.getElementById('vocabTabBtn');
+  if (vocBtn) vocBtn.classList.add('active');
+  document.querySelectorAll('.sidebar-cat').forEach(el => el.classList.remove('active'));
+  renderVocab();
+}
+
+function backToList() {
+  currentEssayId = null;
+  renderContent();
+}
+
+// ===== 渲染主内容 =====
+function renderContent() {
+  const area = document.getElementById('contentArea');
+  area.style.animation = 'none'; area.offsetHeight; area.style.animation = 'slideUp .5s ease';
+
+  if (showingVocab) { renderVocab(); return; }
+
+  const cat = essays[currentCat];
+
+  if (currentEssayId) {
+    // 文章详情
+    const essay = cat.essays.find(e => e.id === currentEssayId);
+    if (!essay) { backToList(); return; }
+    const hasRevision = !!(essay.revisedContent);
+    const showingOriginal = essay._showingOriginal || false;
+    const displayContent = (hasRevision && !showingOriginal) ? essay.revisedContent : essay.content;
+    const wordCount = countWords(displayContent);
+
+    const revisionBadge = hasRevision
+      ? `<span class="revised-notice">✏️ 已批改 — ${showingOriginal ? '查看原文中' : '显示修订版'}</span>`
+      : '';
+
+    const toolbarHTML = `
+      <div class="detail-toolbar">
+        <button class="btn-revise" onclick="openRevisionModal('${essay.id}')">✏️ 一键批改</button>
+        ${hasRevision ? `<button class="btn-view-original${showingOriginal ? ' active' : ''}" onclick="toggleOriginalView('${essay.id}')">${showingOriginal ? '📝 查看修订版' : '📄 查看原文'}</button>` : ''}
+      </div>`;
+
+    area.innerHTML = `
+      <div class="content-header">
+        <button class="btn-back" onclick="backToList()">← 返回列表</button>
+        <span class="detail-badge ${cat.badgeClass}">${cat.badge}</span>
+      </div>
+      <div class="essay-detail">
+        <div class="detail-header"><h2 class="detail-title">${essay.title}</h2></div>
+        <div class="detail-meta">
+          <span class="meta-item">👤 ${essay.author}</span>
+          <span class="meta-item">📅 ${essay.date}</span>
+          <span class="meta-item">📝 <span class="stat-num">${wordCount}</span> 字</span>
+        </div>
+        ${revisionBadge}
+        ${toolbarHTML}
+        <div class="detail-body">${displayContent}</div>
+      </div>`;
+  } else {
+    // 文章列表
+    const listHTML = cat.essays.length === 0
+      ? `<div class="empty-state"><div class="empty-state-icon">📖</div><p>暂无文章</p><p style="font-size:.8rem;margin-top:6px;color:var(--text3)">点击右上角"录入文章"开始创作</p></div>`
+      : cat.essays.map(e => {
+        const revTag = e.revisedContent ? ' <span style="font-size:.7rem;color:var(--orange)">[已批改]</span>' : '';
+        return `
+        <div class="essay-list-item" onclick="viewEssay('${e.id}')">
+          <h3>${e.title}${revTag}</h3>
+          <div class="essay-preview">${getPlainPreview(e.content, 120)}...</div>
+          <div class="essay-info">
+            <span>👤 ${e.author}</span>
+            <span>📅 ${e.date}</span>
+            <span>📝 ${countWords(e.content)} 字</span>
+          </div>
+        </div>`;
+      }).join('');
+
+    area.innerHTML = `
+      <div class="content-header">
+        <h2 class="content-title">${cat.icon} ${cat.name}</h2>
+        <div style="display:flex;align-items:center;gap:10px">
+          <button class="btn-new" onclick="openNewEssayModal()">➕ 录入文章</button>
+          <button class="btn-ai-create" onclick="openAICreateModal()" style="font-size:.85rem;padding:8px 20px">🤖 AI 创作</button>
+        </div>
+      </div>
+      <div class="essay-list">${listHTML}</div>`;
+  }
+}
+
+function viewEssay(id) {
+  currentEssayId = id;
+  renderContent();
+}
+
+// ===== 新增文章弹窗 =====
+function openNewEssayModal() {
+  const ov = document.getElementById('modalOverlay');
+  document.getElementById('modalTitle').textContent = `录入文章 —— ${essays[currentCat].name}`;
+  document.getElementById('newTitle').value = '';
+  document.getElementById('newAuthor').value = '佚名';
+  document.getElementById('newContent').value = '';
+  ov.classList.add('show');
+  setTimeout(() => document.getElementById('newTitle').focus(), 200);
+}
+
+function saveNewEssay() {
+  const title = document.getElementById('newTitle').value.trim();
+  const author = document.getElementById('newAuthor').value.trim() || '佚名';
+  const content = document.getElementById('newContent').value.trim();
+
+  if (!title) { showToast('⚠️', '请输入文章标题'); return; }
+  if (!content) { showToast('⚠️', '请输入文章内容'); return; }
+  if (content.replace(/\s/g, '').length < 100) { showToast('⚠️', '文章内容太短，建议至少100字'); return; }
+
+  // 将纯文本转为HTML段落
+  const paragraphs = content.split('\n').filter(p => p.trim()).map(p => `<p>${p.trim()}</p>`).join('');
+
+  const now = new Date();
+  const date = now.getFullYear() + '-' + String(now.getMonth()+1).padStart(2,'0');
+
+  const newEssay = {
+    id: addId(),
+    title: title,
+    author: author,
+    date: date,
+    content: paragraphs,
+    goodWords: [],
+    goodPhrases: []
+  };
+
+  essays[currentCat].essays.unshift(newEssay);
+  saveData();
+  closeModalDirect();
+  renderContent();
+  showToast('✅', `《${title}》已保存到「${essays[currentCat].name}」`);
+}
+
+// ===== 语音输入 =====
+let voiceLastLen = 0;
+
+function autoPunctuate(text) {
+  if (!text || text.length < 2) return text;
+  let t = text;
+  t = t.replace(/([了呢吗啊呀吧哦噢哟嘿哈嘛哩啰咧呐矣乎哉])(?=[^。！？，、；：])/g, '$1。');
+  t = t.replace(/([吗呢么])([。])/g, '$1？');
+  t = t.replace(/([啊呀哇哎哟嘿哦])([。])/g, '$1！');
+  t = t.replace(/([^，。！？、；：])(但是|然而|不过|可是|所以|因此|于是|然后|接着|而且|并且|况且|从而|因为|由于|如果|假如|虽然|尽管|即使|就算|无论|不管|只要|只有|除非)/g, '$1，$2');
+  if (!/[。！？…]$/.test(t) && t.length > 4) t += '。';
+  return t;
+}
+
+function toggleModalVoice() {
+  if (isVoiceRecording) { stopModalVoice(); return; }
+  if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+    showToast('⚠️', '当前浏览器不支持语音输入，请使用 Chrome 或 Edge');
+    return;
+  }
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  voiceRecognition = new SR();
+  voiceRecognition.lang = 'zh-CN';
+  voiceRecognition.continuous = true;
+  voiceRecognition.interimResults = true;
+
+  voiceRecognition.onstart = () => {
+    isVoiceRecording = true;
+    const btn = document.getElementById('modalVoiceBtn');
+    const status = document.getElementById('modalVoiceStatus');
+    if (btn) btn.classList.add('recording');
+    if (status) status.classList.add('show');
+  };
+
+  voiceRecognition.onresult = (ev) => {
+    let text = '';
+    for (let i = ev.resultIndex; i < ev.results.length; i++) {
+      if (ev.results[i].isFinal) {
+        text += ev.results[i][0].transcript;
+      }
+    }
+    const ta = document.getElementById('newContent');
+    if (ta && text) ta.value += autoPunctuate(text);
+  };
+
+  voiceRecognition.onend = () => {
+    if (isVoiceRecording && voiceRecognition) {
+      try { voiceRecognition.start(); } catch(e) { isVoiceRecording = false; resetModalVoiceUI(); }
+    } else {
+      isVoiceRecording = false; resetModalVoiceUI();
+    }
+  };
+
+  voiceRecognition.onerror = (ev) => {
+    if (ev.error === 'not-allowed') {
+      isVoiceRecording = false; resetModalVoiceUI();
+      showToast('⚠️', '请允许麦克风权限（浏览器地址栏左侧设置）');
+    } else if (ev.error === 'no-speech') {
+      // 静音超时，onend 会自动重启
+    } else {
+      isVoiceRecording = false; resetModalVoiceUI();
+      showToast('⚠️', '语音识别出错，请重试');
+    }
+  };
+
+  voiceRecognition.start();
+  showToast('🎤', '语音输入已开启，可持续20分钟…');
+}
+
+function stopModalVoice() {
+  isVoiceRecording = false;
+  if (voiceRecognition) {
+    try { voiceRecognition.stop(); } catch(e) {}
+    voiceRecognition = null;
+  }
+  resetModalVoiceUI();
+}
+
+function resetModalVoiceUI() {
+  const btn = document.getElementById('modalVoiceBtn');
+  const status = document.getElementById('modalVoiceStatus');
+  if (btn) btn.classList.remove('recording');
+  if (status) status.classList.remove('show');
+}
+
+function closeModal(e) {
+  if (e.target === document.getElementById('modalOverlay')) closeModalDirect();
+}
+
+function closeModalDirect() {
+  stopModalVoice();
+  document.getElementById('modalOverlay').classList.remove('show');
+}
+
+// ===== 积累词句 =====
+function renderVocab() {
+  const area = document.getElementById('contentArea');
+  area.style.animation = 'none'; area.offsetHeight; area.style.animation = 'slideUp .5s ease';
+
+  const cN = { growth: '成长感悟', culture: '传统文化', patriotism: '家国情怀', ai: 'AI科技创新', scenery: '景色心情' };
+  const cC = { growth: 'cat-growth', culture: 'cat-culture', patriotism: 'cat-patriotism', ai: 'cat-ai', scenery: 'cat-scenery' };
+  const cI = { growth: '🌱', culture: '🏮', patriotism: '🇨🇳', ai: '🤖', scenery: '🌸' };
+
+  let any = false, html = '';
+  Object.keys(essays).forEach(cat => {
+    const catData = essays[cat];
+    let allWords = [], allPhrases = [];
+    catData.essays.forEach(e => {
+      allWords = allWords.concat(e.goodWords || []);
+      allPhrases = allPhrases.concat(e.goodPhrases || []);
+    });
+    allWords = [...new Set(allWords)];
+    allPhrases = [...new Set(allPhrases)];
+    if (!allWords.length && !allPhrases.length) return;
+    any = true;
+    html += `<div class="vocab-section"><div class="vocab-section-title ${cC[cat]}">${cI[cat]} ${cN[cat]}</div><div class="vocab-tags">${allWords.map(w => `<span class="vocab-tag tag-word">📝 ${w}<span class="tag-source">${catData.badge}</span></span>`).join('')}${allPhrases.map(p => `<span class="vocab-tag tag-phrase">💬 ${p.length>22?p.substring(0,22)+'...':p}<span class="tag-source">${catData.badge}</span></span>`).join('')}</div></div>`;
+  });
+
+  if (!any) html = `<div class="vocab-empty"><div class="vocab-empty-icon">📚</div><p>还没有积累的好词好句</p><p style="font-size:.84rem;margin-top:6px">文章中的好词好句会自动收录</p></div>`;
+
+  area.innerHTML = `<div class="content-header"><h2 class="content-title">✨ 作文积累词句</h2></div><div class="vocab-header"></div><p class="vocab-subtitle">每篇文章的好词好句自动汇总收录</p>${html}`;
+}
+
+// ===== Toast =====
+function showToast(icon, msg) {
+  const t = document.getElementById('toast');
+  document.getElementById('toastIcon').textContent = icon;
+  document.getElementById('toastMsg').textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+
+// ===== 查看原文/修订版切换 =====
+function toggleOriginalView(essayId) {
+  const cat = essays[currentCat];
+  const essay = cat.essays.find(e => e.id === essayId);
+  if (!essay) return;
+  essay._showingOriginal = !essay._showingOriginal;
+  renderContent();
+}
+
+// ===== 一键批改弹窗 =====
+let revisionEssayId = null;
+let revisionParagraphs = [];
+let revisionVoiceRecognition = null;
+let revisionIsRecording = false;
+let revisionActivePara = -1;
+
+function openRevisionModal(essayId) {
+  const cat = essays[currentCat];
+  const essay = cat.essays.find(e => e.id === essayId);
+  if (!essay) return;
+
+  revisionEssayId = essayId;
+  const ov = document.getElementById('revisionOverlay');
+  document.getElementById('revisionTitle').textContent = `一键批改 —— ${essay.title}`;
+
+  // Parse content HTML into plain text paragraphs
+  const div = document.createElement('div');
+  div.innerHTML = essay.content;
+  const paras = div.querySelectorAll('p');
+  revisionParagraphs = Array.from(paras).map(p => p.textContent.trim());
+
+  // Build textareas
+  const body = document.getElementById('revisionBody');
+  body.innerHTML = revisionParagraphs.map((text, i) => `
+    <div class="revision-para">
+      <div class="revision-para-label">
+        <span>段落 ${i + 1}</span>
+        <button class="btn-ai" onclick="aiPolishParagraph(${i})">🤖 AI润色</button>
+      </div>
+      <textarea class="revision-textarea" id="revPara${i}" oninput="onRevParaChange(${i})">${escapeHTML(text)}</textarea>
+    </div>
+  `).join('');
+
+  ov.classList.add('show');
+  revisionActivePara = -1;
+}
+
+function escapeHTML(str) {
+  const d = document.createElement('div');
+  d.textContent = str;
+  return d.innerHTML;
+}
+
+function onRevParaChange(index) {
+  const ta = document.getElementById('revPara' + index);
+  if (!ta) return;
+  const orig = revisionParagraphs[index];
+  if (ta.value !== orig) {
+    ta.classList.add('modified');
+  } else {
+    ta.classList.remove('modified');
+  }
+}
+
+function closeRevisionModal(e) {
+  if (e && e.target === document.getElementById('revisionOverlay')) {
+    closeRevisionModalDirect();
+  }
+}
+
+function closeRevisionModalDirect() {
+  stopRevisionVoice();
+  document.getElementById('revisionOverlay').classList.remove('show');
+  revisionEssayId = null;
+  revisionParagraphs = [];
+}
+
+// ===== 计算差异（字符级LCS算法） =====
+function computeDiff(original, revised) {
+  if (original === revised) return escapeHTML(original);
+
+  const o = [...original];
+  const r = [...revised];
+  const m = o.length, n = r.length;
+
+  // LCS table
+  const dp = new Array(m + 1);
+  for (let i = 0; i <= m; i++) {
+    dp[i] = new Uint16Array(n + 1);
+  }
+
+  for (let i = 1; i <= m; i++) {
+    for (let j = 1; j <= n; j++) {
+      if (o[i - 1] === r[j - 1]) dp[i][j] = dp[i - 1][j - 1] + 1;
+      else dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
+    }
+  }
+
+  // Backtrack
+  const diff = [];
+  let i = m, j = n;
+  while (i > 0 || j > 0) {
+    if (i > 0 && j > 0 && o[i - 1] === r[j - 1]) {
+      diff.unshift({ t: '=', c: o[i - 1] });
+      i--; j--;
+    } else if (j > 0 && (i === 0 || dp[i][j - 1] >= dp[i - 1][j])) {
+      diff.unshift({ t: '+', c: r[j - 1] });
+      j--;
+    } else {
+      diff.unshift({ t: '-', c: o[i - 1] });
+      i--;
+    }
+  }
+
+  // Merge consecutive same-type chars
+  let html = '', cur = '', curT = '';
+  for (const d of diff) {
+    if (d.t === curT) { cur += d.c; continue; }
+    if (curT === '-') html += '<span class="anno-del">' + escapeHTML(cur) + '</span>';
+    else if (curT === '+') html += '<span class="anno-ins">' + escapeHTML(cur) + '</span>';
+    else html += escapeHTML(cur);
+    cur = d.c; curT = d.t;
+  }
+  if (curT === '-') html += '<span class="anno-del">' + escapeHTML(cur) + '</span>';
+  else if (curT === '+') html += '<span class="anno-ins">' + escapeHTML(cur) + '</span>';
+  else html += escapeHTML(cur);
+
+  return html;
+}
+
+// ===== 保存批改 =====
+function saveRevision() {
+  const cat = essays[currentCat];
+  const essay = cat.essays.find(e => e.id === revisionEssayId);
+  if (!essay) return;
+
+  // Collect revised text from textareas
+  const revisedParas = [];
+  let hasChanges = false;
+  for (let i = 0; i < revisionParagraphs.length; i++) {
+    const ta = document.getElementById('revPara' + i);
+    const revised = ta ? ta.value.trim() : revisionParagraphs[i];
+    revisedParas.push(revised);
+    if (revised !== revisionParagraphs[i]) hasChanges = true;
+  }
+
+  if (!hasChanges) {
+    showToast('⚠️', '未检测到任何修改');
+    return;
+  }
+
+  // Save original content
+  if (!essay.originalContent) {
+    essay.originalContent = essay.content;
+  }
+
+  // Build annotated HTML by diffing each paragraph
+  const annotatedParas = revisionParagraphs.map((orig, i) => {
+    const rev = revisedParas[i];
+    if (orig === rev) return '<p>' + escapeHTML(orig) + '</p>';
+    return '<p>' + computeDiff(orig, rev) + '</p>';
+  });
+
+  essay.revisedContent = annotatedParas.join('');
+  essay._showingOriginal = false;
+  saveData();
+  closeRevisionModalDirect();
+  renderContent();
+  showToast('✅', '批改已保存，修订内容已标注');
+}
+
+// ===== AI润色 =====
+const polishReplacements = [
+  // 常见口语 → 书面语
+  ['很', '十分'], ['挺', '颇为'], ['特别', '格外'], ['非常', '极其'],
+  ['大家', '众人'], ['东西', '事物'], ['事情', '事宜'], ['办法', '途径'],
+  ['其实', '实则'], ['所以', '故而'], ['但是', '然而'], ['而且', '并且'],
+  ['应该', '应当'], ['可以', '得以'], ['需要', '亟需'], ['因为', '因'],
+  // 连接词强化
+  ['首先', '首先，'], ['其次', '其次，'], ['最后', '最后，'],
+  ['总之', '总而言之，'], ['例如', '譬如，'],
+  // 句式优化
+  ['我觉得', '我以为'], ['我认为', '我深信'], ['我们知道', '我们深知'],
+];
+
+function aiPolishText(text) {
+  let polished = text;
+  // Apply word replacements (create fresh regex each time to avoid lastIndex bug)
+  for (const [word, replacement] of polishReplacements) {
+    polished = polished.split(word).join(replacement);
+  }
+  // Fix spacing around Chinese punctuation
+  polished = polished.replace(/\s*，\s*/g, '，');
+  polished = polished.replace(/\s*。\s*/g, '。');
+  polished = polished.replace(/\s*！\s*/g, '！');
+  polished = polished.replace(/\s*？\s*/g, '？');
+  polished = polished.replace(/\s*；\s*/g, '；');
+  polished = polished.replace(/\s*：\s*/g, '：');
+  polished = polished.replace(/，,/g, '，');
+  polished = polished.replace(/。。/g, '。');
+  // Add transitional phrases at paragraph start if missing
+  const starters = ['诚然，', '由此可见，', '换言之，', '诚如', '值得注意的是，', '归根结底，'];
+  if (polished.length > 30 && !starters.some(s => polished.startsWith(s))) {
+    // Only add if text doesn't start with a quote or name
+    if (!/^[《""'“‘故因].{1,4}/.test(polished)) {
+      const r = starters[Math.floor(Math.random() * starters.length)];
+      polished = r + polished;
+    }
+  }
+  return polished;
+}
+
+function aiPolishParagraph(index) {
+  const ta = document.getElementById('revPara' + index);
+  if (!ta) return;
+  const original = revisionParagraphs[index];
+  const current = ta.value.trim() || original;
+  const polished = aiPolishText(current);
+  if (polished !== current) {
+    ta.value = polished;
+    ta.classList.add('modified');
+    showToast('🤖', `段落 ${index + 1} 已AI润色`);
+  } else {
+    showToast('🤖', `段落 ${index + 1} 已是最佳表达`);
+  }
+}
+
+function aiPolishAll() {
+  let count = 0;
+  for (let i = 0; i < revisionParagraphs.length; i++) {
+    const ta = document.getElementById('revPara' + i);
+    if (!ta) continue;
+    const original = revisionParagraphs[i];
+    const current = ta.value.trim() || original;
+    const polished = aiPolishText(current);
+    if (polished !== current) {
+      ta.value = polished;
+      ta.classList.add('modified');
+      count++;
+    }
+  }
+  if (count > 0) {
+    showToast('🤖', `已润色 ${count} 个段落`);
+  } else {
+    showToast('🤖', '所有段落已是最佳表达');
+  }
+}
+
+// ===== 批改语音输入 =====
+function toggleRevisionVoice() {
+  if (revisionIsRecording) { stopRevisionVoice(); return; }
+  if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+    showToast('⚠️', '当前浏览器不支持语音输入，请使用 Chrome 或 Edge');
+    return;
+  }
+  // Find which textarea is focused, or use first one
+  let targetIdx = revisionActivePara;
+  if (targetIdx < 0) targetIdx = 0;
+  const ta = document.getElementById('revPara' + targetIdx);
+  if (ta) ta.focus();
+
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  revisionVoiceRecognition = new SR();
+  revisionVoiceRecognition.lang = 'zh-CN';
+  revisionVoiceRecognition.continuous = true;
+  revisionVoiceRecognition.interimResults = true;
+
+  revisionVoiceRecognition.onstart = () => {
+    revisionIsRecording = true;
+    const btn = document.getElementById('revisionVoiceBtn');
+    const status = document.getElementById('revisionVoiceStatus');
+    if (btn) btn.classList.add('recording');
+    if (status) status.classList.add('show');
+  };
+
+  revisionVoiceRecognition.onresult = (ev) => {
+    let text = '';
+    for (let i = ev.resultIndex; i < ev.results.length; i++) {
+      if (ev.results[i].isFinal) {
+        text += ev.results[i][0].transcript;
+      }
+    }
+    if (!text) return;
+    let idx = revisionActivePara;
+    if (idx < 0) idx = 0;
+    const ta = document.getElementById('revPara' + idx);
+    if (ta) {
+      ta.value += autoPunctuate(text);
+      ta.classList.add('modified');
+    }
+  };
+
+  revisionVoiceRecognition.onend = () => {
+    if (revisionIsRecording && revisionVoiceRecognition) {
+      try { revisionVoiceRecognition.start(); } catch(e) { revisionIsRecording = false; resetRevisionVoiceUI(); }
+    } else {
+      revisionIsRecording = false; resetRevisionVoiceUI();
+    }
+  };
+
+  revisionVoiceRecognition.onerror = (ev) => {
+    if (ev.error === 'not-allowed') {
+      revisionIsRecording = false; resetRevisionVoiceUI();
+      showToast('⚠️', '请允许麦克风权限（浏览器地址栏左侧设置）');
+    } else if (ev.error === 'no-speech') {
+      // 静音超时，onend 会自动重启
+    } else {
+      revisionIsRecording = false; resetRevisionVoiceUI();
+      showToast('⚠️', '语音识别出错，请重试');
+    }
+  };
+
+  revisionVoiceRecognition.start();
+  showToast('🎤', '语音输入已开启，点击要输入的段落后说话……');
+}
+
+function stopRevisionVoice() {
+  revisionIsRecording = false;
+  if (revisionVoiceRecognition) {
+    try { revisionVoiceRecognition.stop(); } catch(e) {}
+    revisionVoiceRecognition = null;
+  }
+  resetRevisionVoiceUI();
+}
+
+function resetRevisionVoiceUI() {
+  const btn = document.getElementById('revisionVoiceBtn');
+  const status = document.getElementById('revisionVoiceStatus');
+  if (btn) btn.classList.remove('recording');
+  if (status) status.classList.remove('show');
+}
+
+// Track which textarea is active for voice input
+document.addEventListener('focusin', function(e) {
+  if (e.target && e.target.classList.contains('revision-textarea')) {
+    const m = e.target.id.match(/^revPara(\d+)$/);
+    if (m) revisionActivePara = parseInt(m[1]);
+  }
+});
+
+
+// ===== AI创作引擎 =====
+const essayTemplates = {
+  argumentative: {
+    openings: [
+      '时代如滚滚洪流，奔涌向前。当"{title}"这个话题进入我们的视野，我们不禁要问：这到底意味着什么？这不仅仅是个人选择的问题，更是一个时代的命题。',
+      '古语云："明者因时而变，知者随事而制。"在当今社会，"{}"已然成为一个不容回避的话题。面对它，我们既要有理性的审视，也要有感性的体悟。',
+      '每一代人都有每一代人的命题。对于当下的我们而言，"{}"或许就是这个时代留给我们的一道必答题。它关乎选择，关乎价值，更关乎我们想要成为怎样的人。',
+      '曾几何时，我们对"{}"的理解还停留在表面。然而，随着阅历的增长和思考的深入，我渐渐意识到，这远不是一个简单的是非题，而是一道需要用心去解答的论述。',
+      '在这个信息爆炸的时代，"{}"这个话题频繁出现在我们的视野中。有人说它是机遇，有人说它是挑战。而我以为，它既是机遇也是挑战，关键在于我们如何应对。'
+    ],
+    bodyTransitions: [
+      '首先，从历史的角度来看，',
+      '其次，就现实层面而言，',
+      '再者，从发展的眼光审视，',
+      '更进一步说，',
+      '换一个角度来看，',
+      '不可忽视的是，',
+      '值得深思的是，',
+      '究其根本，'
+    ],
+    conclusions: [
+      '综上所述，"{}"不只是一个简单的话题，它映射出我们这个时代的精神面貌。唯有以理性的态度审视，以积极的行动应对，方能在这变局之中找到属于自己的方向。正如苏轼所言："古之立大事者，不惟有超世之才，亦必有坚忍不拔之志。"与诸君共勉。',
+      '总而言之，面对"{}"，我们既不能盲目乐观，也不必过度悲观。保持清醒的头脑，坚守内心的价值，在行动中寻找答案，这才是当代青年应有的姿态。路漫漫其修远兮，吾将上下而求索。',
+      '回顾全文，我们对"{}"进行了多角度的剖析。从中不难看出，任何事物都有其两面性，而智慧恰恰在于把握其中的平衡。愿我们都能在这条探索之路上，走得坚定而从容。',
+      '{}——这不仅仅是一个词汇，更是一种态度，一种选择，一种面向未来的姿态。让我们带着这份思考，在人生的道路上砥砺前行，用行动书写属于自己的精彩篇章。'
+    ],
+    quotes: [
+      '正如鲁迅先生所言："世上本没有路，走的人多了，也便成了路。"',
+      '王阳明曾说："知行合一。"知而不行，只是未知。',
+      '老子曰："千里之行，始于足下。"',
+      '梁启超曾言："少年智则国智，少年强则国强。"',
+      '爱因斯坦说过："想象力比知识更重要。"',
+      '韩愈有言："业精于勤，荒于嬉；行成于思，毁于随。"'
+    ]
+  },
+  narrative: {
+    openings: [
+      '那是一个再普通不过的下午，阳光透过窗棂洒在桌面上，我正对着"{}"这个题目发呆。那时的我还不知道，一段关于成长的故事即将展开。',
+      '记忆像一本泛黄的相册，翻开关于"{}"的那一页，往事便如潮水般涌来。那件事虽已过去许久，但每次想起，心中依然会泛起涟漪。',
+      '人生中总有一些时刻，看似微不足道，却会在回忆里反复闪光。对我来说，与"{}"相关的那段经历，便是如此。',
+      '如果让我用一个词来概括那段时光，我想会是"{}"。它不只是一个词语，更是我生命中最难忘的一段旅程。'
+    ],
+    bodyTransitions: [
+      '事情还要从一开始说起。',
+      '随着时间推移，事情的发展出乎了我的意料。',
+      '就在我以为一切都会按部就班地进行下去时，转机出现了。',
+      '那天的情景，我至今记忆犹新。',
+      '接下来的日子里，',
+      '那一刻，我突然明白了什么。',
+    ],
+    conclusions: [
+      '如今回望那段经历，我心中充满感激。正是"{}"这件事，让我从一个懵懂的少年，开始学会思考、学会承担。成长的路上，有些课是教室学不到的，它们藏在生活的细节里，等待我们去发现。',
+      '故事讲到这里，似乎应该有一个结果。但生活不是小说，很多事没有明确的结局。重要的是在这个过程中，我遇见了更好的自己。而这，或许就是"{}"给我最好的礼物。',
+      '往事如烟，却总有些东西会沉淀下来。关于"{}"的记忆，早已化作我心头的养分，在日后的岁月里，滋养着我对生活的理解和对未来的期待。'
+    ],
+    quotes: [
+      '不知谁说过："成长就是不断地告别，又不断地相遇。"',
+      '有一句话说得好："人生没有白走的路，每一步都算数。"',
+      '我想起老师曾说过："经历是最好的老师。"'
+    ]
+  },
+  prose: {
+    openings: [
+      '春去秋来，花开花落。当"{title}"这几个字浮现在心头时，窗外的光正斜斜地照进来，在纸上投下淡淡的影子。这光让我想起了许多事，许多关于时光、关于生命的细微感触。',
+      '风从远处吹来，带着草木的气息。我坐在书桌前，思绪漫无目的地飘荡。不经意间，"{}"这个词闯入了我的脑海，像一颗石子投入平静的湖面，荡开了层层涟漪。',
+      '夜色如墨，只有桌上的台灯圈出一小片温暖的光。在这样的时刻提笔写"{}"，心境竟格外安宁。仿佛整个世界都安静下来，只剩下笔尖与纸张的轻轻对话。',
+      '有人说，最美的文字来自最深的孤独。当我尝试写下关于"{}"的感悟时，四周一片寂静，而内心的声音却异常清晰。'
+    ],
+    bodyTransitions: [
+      '于是，我不禁开始思考，',
+      '细细想来，',
+      '在那些安静的时光里，',
+      '也许是因为，',
+      '就像那，',
+      '此情此景，让我不由得联想到，',
+      '静静地感受着这一切，',
+    ],
+    conclusions: [
+      '夜已深，笔将停。关于"{}"的思绪，也该告一段落。但我知道，真正重要的不是写下了什么，而是在书写的过程中，我与自己的内心进行了一场深谈。如此，足矣。',
+      '生活不是一场赛跑，而是一段旅程。"{}"让我明白，有时候慢下来，静下来，才能真正看见生命中那些被忽略的美好。愿我们都能在奔忙中，留一份闲心，看花开花落，云卷云舒。',
+      '写到这里，窗外的星光似乎更亮了。也许"{}"本就没有标准答案，它更像一面镜子，照出每个人内心不同的风景。而我所见，便是此刻的安宁与澄澈。'
+    ],
+    quotes: [
+      '我不禁想起苏轼的《前赤壁赋》："惟江上之清风，与山间之明月，耳得之而为声，目遇之而成色。"',
+      '王维诗云："行到水穷处，坐看云起时。"',
+      '陶渊明说："采菊东篱下，悠然见南山。"',
+      '张岱在《湖心亭看雪》中写道："雾凇沆砀，天与云与山与水，上下一白。"'
+    ]
+  }
+};
+
+function pickRandom(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+
+function generateParagraph(sentences, minLen, maxLen) {
+  let para = '';
+  const target = minLen + Math.floor(Math.random() * (maxLen - minLen));
+  const used = new Set();
+  while (para.length < target) {
+    let s = pickRandom(sentences);
+    let tries = 0;
+    while (used.has(s) && tries < sentences.length) { s = pickRandom(sentences); tries++; }
+    used.add(s);
+    para += s;
+    if (para.length >= target) break;
+  }
+  return para;
+}
+
+function buildTopicPool(theme) {
+  // Extract keywords from theme to build relevant vocabulary
+  const pools = {
+    tech: { keywords: ['科技', 'AI', '人工智能', '互联网', '数字', '智能', '技术', '创新', '信息', '算法', '数据'], words: ['技术革新', '数字化转型', '智能时代', '信息爆炸', '效率提升', '人机协作', '深度学习', '数字鸿沟'], phrases: ['当AI可以写出优美的文章时', '在这个算法无处不在的时代里', '技术的发展从未停歇', '每一次技术创新都在重塑我们的生活'] },
+    nature: { keywords: ['自然', '环境', '生态', '绿色', '地球', '气候', '山水', '季节', '花', '树', '风', '雨', '雪', '山', '水'], words: ['绿水青山', '人与自然', '生态平衡', '四季更替', '鸟语花香', '层林尽染', '碧水蓝天'], phrases: ['大自然是人类最好的老师', '每一片落叶都在诉说着季节的故事', '天地有大美而不言'] },
+    growth: { keywords: ['成长', '青春', '梦想', '奋斗', '坚持', '努力', '学习', '未来', '希望', '理想', '目标', '成功'], words: ['砥砺前行', '不负韶华', '青春无悔', '追逐梦想', '脚踏实地', '仰望星空', '百折不挠'], phrases: ['青春是一本太仓促的书', '成长的过程充满阵痛', '每一次跌倒都是为了更好地站起'] },
+    culture: { keywords: ['文化', '传统', '历史', '经典', '国学', '诗词', '书法', '艺术', '传承', '民俗', '节日'], words: ['薪火相传', '博大精深', '源远流长', '文化自信', '古为今用', '守正创新', '千年文脉'], phrases: ['传统文化是我们精神的根脉', '每一件文物都在诉说着历史', '经典之所以为经典在于其永恒的价值'] },
+    society: { keywords: ['社会', '责任', '担当', '奉献', '集体', '国家', '民族', '时代', '使命', '公德', '文明'], words: ['时代使命', '社会担当', '家国情怀', '匹夫有责', '同舟共济', '兼济天下', '众志成城'], phrases: ['每个人都是时代的见证者和参与者', '个人之于社会犹如水滴之于大海', '历史的接力棒已经传到我们手中'] }
+  };
+
+  let matched = null;
+  let maxScore = 0;
+  for (const [key, pool] of Object.entries(pools)) {
+    let score = 0;
+    for (const kw of pool.keywords) {
+      if (theme.includes(kw)) score++;
+    }
+    if (score > maxScore) { maxScore = score; matched = pool; }
+  }
+  return matched || pools.growth; // default to growth
+}
+
+function aiGenerateEssay(title, theme, targetWords, genre) {
+  const tmpl = essayTemplates[genre];
+  const pool = buildTopicPool(theme + title);
+
+  // Opening
+  const openingTemplate = pickRandom(tmpl.openings);
+  const opening = openingTemplate.replace('{}', title).replace('{title}', title);
+
+  // Body paragraphs (3-5 paragraphs based on word count)
+  const numBodyParas = targetWords <= 600 ? 3 : targetWords <= 800 ? 4 : 5;
+  const wordsPerPara = Math.floor(targetWords / (numBodyParas + 2)); // opening + body + conclusion
+
+  let bodyParas = [];
+  const bodyContent = [];
+
+  // Generate body content based on genre and topic
+  if (genre === 'argumentative') {
+    const arguments_list = [
+      `从历史的角度来看，人类社会的发展从来都伴随着变革与挑战。无论是工业革命时期的手工业者，还是信息时代的传统媒体，每一次技术跃迁都曾引发恐慌与抵触。然而，历史反复证明——适应变化、拥抱创新，才是生存与发展的硬道理。`,
+      `就现实层面而言，${theme ? theme + '的影响' : '这一现象'}已经渗透到我们生活的方方面面。从日常琐事到重大决策，从个人选择到国家战略，其足迹无处不在。面对这样的变化，与其被动接受，不如主动求索。`,
+      `值得深思的是，在追逐效率与进步的同时，我们是否也在不经意间丢失了一些珍贵的东西？古人讲"欲速则不达"，在快节奏的现代社会中，偶尔停下脚步审视来路，或许比一味向前更为重要。${pickRandom(tmpl.quotes)}`,
+      `从发展的眼光看，${title}所触及的问题，本质上是人类永恒追问的延续——什么是好的生活？什么是真正的进步？这些问题没有标准答案，但正是这样的思考本身，赋予了生命以深度和意义。`,
+      `更深一层来看，${title}让我们有机会重新审视自身的定位。在变革的浪潮中，保持独立思考的能力，坚守内心的价值准则，或许比随波逐流更需要勇气，也更能彰显一个人的品格。`
+    ];
+    for (let i = 0; i < numBodyParas; i++) {
+      const trans = pickRandom(tmpl.bodyTransitions);
+      const content = arguments_list[i % arguments_list.length];
+      bodyParas.push(`<p>${trans}${content}</p>`);
+    }
+  } else if (genre === 'narrative') {
+    const narrative_scenes = [
+      `那天下午的阳光格外明亮，教室里弥漫着粉笔灰的味道。班主任走进来，在黑板上写下了几个大字。谁也没想到，那几个字会改变我接下来的一段人生轨迹。`,
+      `我至今仍记得那个细节——母亲在厨房里忙碌的背影，窗外的梧桐树叶正一片一片地往下落。就是在那个再平常不过的时刻，一个念头突然击中了我。`,
+      `比赛前夜，我翻来覆去睡不着。手机上不断弹出同学们加油的消息，每一条都让我既感动又紧张。我索性起身走到窗前，看着深夜安静的街道，心里百感交集。`,
+      `那个夏天的蝉鸣特别响。我和好友并肩走在回家的路上，他突然问我一个问题。我愣住了，不是因为答不上来，而是因为我从未认真想过这个问题的答案。`,
+      `当老师念到我的名字时，我几乎不敢相信自己的耳朵。那一刻，所有的努力、所有的汗水、所有的自我怀疑，都在一瞬间得到了回应。原来，坚持真的有回报。`
+    ];
+    for (let i = 0; i < numBodyParas; i++) {
+      const trans = pickRandom(tmpl.bodyTransitions);
+      const scene = narrative_scenes[i % narrative_scenes.length];
+      bodyParas.push(`<p>${trans}${scene}</p>`);
+    }
+  } else if (genre === 'prose') {
+    const prose_thoughts = [
+      `在那些无所事事的黄昏里，时间仿佛变得黏稠。光线一寸一寸地从墙面上退去，像潮水退潮，留下寂静的沙滩。我常常在这样的时候想，人这一生，到底在追逐些什么？`,
+      `树叶的脉络在灯光下清晰可见，每一道纹路都像是岁月写下的注脚。一片叶子尚且有如此丰富的故事，何况是一个人的生命。我们太过匆忙，以至于错过了太多像这样微小却珍贵的瞬间。`,
+      `雨滴敲打着窗棂，发出细碎而节奏分明的声响。这是大自然独有的韵律，比任何音乐都更能让人沉静。在这样的雨夜里，思绪也像雨丝一样，飘得漫无边际。`,
+      `花朵的绽放需要漫长等待，而凋谢只需一阵风。这让我想到生命中的诸多事物——积累需要日复一日的坚持，而失去往往只在一念之间。唯有珍惜当下，才不辜负这稍纵即逝的美好。`,
+      `山间的雾气渐渐散去，露出了远处层层叠叠的山峦轮廓，像一幅正在被晕染的水墨画。我静静地站在那里，感受到一种说不清的感动——天地之大美，无需言语，只需用心。`
+    ];
+    for (let i = 0; i < numBodyParas; i++) {
+      const trans = pickRandom(tmpl.bodyTransitions);
+      const thought = prose_thoughts[i % prose_thoughts.length];
+      bodyParas.push(`<p>${trans}${thought}</p>`);
+    }
+  }
+
+  // Shuffle body paragraphs slightly for variety
+  bodyParas = bodyParas.sort(() => Math.random() - 0.5);
+
+  // Conclusion
+  const conclusionTemplate = pickRandom(tmpl.conclusions);
+  const conclusion = `<p>${conclusionTemplate.replace('{}', title).replace('{title}', title)}</p>`;
+
+  // Assemble
+  const allParas = [`<p>${opening}</p>`, ...bodyParas, conclusion];
+  return allParas.join('');
+}
+
+// ===== AI创作弹窗 =====
+function openAICreateModal() {
+  const ov = document.getElementById('aiCreateOverlay');
+  document.getElementById('aiTitle').value = '';
+  document.getElementById('aiTheme').value = '';
+  document.getElementById('aiWordCount').value = '800';
+  document.getElementById('aiGenre').value = 'argumentative';
+  document.getElementById('aiGenStatus').style.display = 'none';
+  document.getElementById('aiResult').style.display = 'none';
+  document.getElementById('aiGenBtn').style.display = '';
+  document.getElementById('aiSaveBtn').style.display = 'none';
+  document.getElementById('aiContent').value = '';
+
+  // Populate category dropdown
+  const sel = document.getElementById('aiCategory');
+  sel.innerHTML = Object.keys(essays).map(k =>
+    `<option value="${k}">${essays[k].icon} ${essays[k].name}</option>`
+  ).join('');
+  sel.value = currentCat;
+
+  ov.classList.add('show');
+  setTimeout(() => document.getElementById('aiTitle').focus(), 200);
+}
+
+function closeAICreateModal(e) {
+  if (!e || e.target === document.getElementById('aiCreateOverlay')) {
+    closeAICreateModalDirect();
+  }
+}
+
+function closeAICreateModalDirect() {
+  document.getElementById('aiCreateOverlay').classList.remove('show');
+}
+
+function aiGenerate() {
+  const title = document.getElementById('aiTitle').value.trim();
+  const theme = document.getElementById('aiTheme').value.trim();
+  const wordCount = parseInt(document.getElementById('aiWordCount').value);
+  const genre = document.getElementById('aiGenre').value;
+
+  if (!title) { showToast('⚠️', '请输入作文题目'); return; }
+  if (!theme) { showToast('⚠️', '请输入中心思想'); return; }
+
+  // Show loading
+  document.getElementById('aiGenStatus').style.display = 'block';
+  document.getElementById('aiResult').style.display = 'none';
+  document.getElementById('aiGenBtn').disabled = true;
+  document.getElementById('aiSaveBtn').style.display = 'none';
+
+  // Simulate AI thinking time
+  setTimeout(() => {
+    const essay = aiGenerateEssay(title, theme, wordCount, genre);
+    document.getElementById('aiContent').value = essay;
+    document.getElementById('aiGenStatus').style.display = 'none';
+    document.getElementById('aiResult').style.display = 'block';
+    document.getElementById('aiGenBtn').disabled = false;
+    document.getElementById('aiSaveBtn').style.display = '';
+    showToast('✅', `AI已完成创作，共约 ${countWords(essay)} 字`);
+  }, 1200);
+}
+
+function saveAIGeneratedEssay() {
+  const title = document.getElementById('aiTitle').value.trim();
+  const author = 'AI创作';
+  const contentHTML = document.getElementById('aiContent').value.trim();
+  const catKey = document.getElementById('aiCategory').value;
+
+  if (!title) { showToast('⚠️', '请输入作文题目'); return; }
+  if (!contentHTML) { showToast('⚠️', '请先生成文章'); return; }
+
+  const now = new Date();
+  const date = now.getFullYear() + '-' + String(now.getMonth()+1).padStart(2,'0');
+
+  const newEssay = {
+    id: addId(),
+    title: title,
+    author: author,
+    date: date,
+    content: contentHTML,
+    goodWords: [],
+    goodPhrases: [],
+    aiGenerated: true
+  };
+
+  essays[catKey].essays.unshift(newEssay);
+  saveData();
+  closeAICreateModalDirect();
+  currentCat = catKey;
+  currentEssayId = null;
+  showingVocab = false;
+  document.querySelectorAll('.sidebar-cat').forEach(el => {
+    el.classList.toggle('active', el.dataset.cat === catKey);
+  });
+  document.getElementById('vocabTabBtn').classList.remove('active');
+  renderContent();
+  showToast('✅', `AI创作《${title}》已保存到「${essays[catKey].name}」`);
+}
+
+
+
+// ===== 动态侧边栏渲染 =====
+const extraCategoryColors = [
+  { badgeClass: 'badge-purple', activeClass: 'cat-purple' },
+  { badgeClass: 'badge-yellow', activeClass: 'cat-yellow' },
+  { badgeClass: 'badge-teal', activeClass: 'cat-teal' },
+  { badgeClass: 'badge-rose', activeClass: 'cat-rose' },
+  { badgeClass: 'badge-ai', activeClass: 'cat-ai' },
+  { badgeClass: 'badge-scenery', activeClass: 'cat-scenery' },
+];
+
+function getCatStyleClass(key) {
+  const map = {
+    growth: { badgeClass: 'badge-growth', activeClass: 'cat-growth' },
+    culture: { badgeClass: 'badge-culture', activeClass: 'cat-culture' },
+    patriotism: { badgeClass: 'badge-patriotism', activeClass: 'cat-patriotism' },
+    ai: { badgeClass: 'badge-ai', activeClass: 'cat-ai' },
+    scenery: { badgeClass: 'badge-scenery', activeClass: 'cat-scenery' },
+  };
+  if (map[key]) return map[key];
+  // Assign a color from extra palette based on position
+  const keys = Object.keys(essays);
+  const idx = keys.indexOf(key);
+  if (idx >= 5) {
+    return extraCategoryColors[(idx - 5) % extraCategoryColors.length];
+  }
+  return extraCategoryColors[0];
+}
+
+function renderSidebar() {
+  const nav = document.getElementById('sidebarNav');
+  if (!nav) return;
+  const keys = Object.keys(essays);
+  nav.innerHTML = keys.map(key => {
+    const cat = essays[key];
+    const style = getCatStyleClass(key);
+    const isActive = (key === currentCat && !showingVocab);
+    return `
+      <div class="sidebar-cat ${style.activeClass}${isActive ? ' active' : ''}" data-cat="${key}" onclick="switchCategory('${key}')">
+        <span class="sidebar-cat-label">${cat.icon} ${cat.name}</span>
+        <span class="sidebar-cat-count" id="count-${key}">${cat.essays.length}</span>
+      </div>`;
+  }).join('');
+
+  // Also update category dropdown in AI modal if it exists
+  const aiCat = document.getElementById('aiCategory');
+  if (aiCat) {
+    const currentVal = aiCat.value;
+    aiCat.innerHTML = keys.map(k =>
+      `<option value="${k}"${k === currentVal ? ' selected' : ''}>${essays[k].icon} ${essays[k].name}</option>`
+    ).join('');
+  }
+}
+
+// Override updateCategoryCounts to work dynamically
+const _origUpdateCategoryCounts = updateCategoryCounts;
+updateCategoryCounts = function() {
+  Object.keys(essays).forEach(key => {
+    const el = document.getElementById('count-' + key);
+    if (el) el.textContent = essays[key].essays.length;
+  });
+};
+
+// Update switchCategory to refresh sidebar
+const _origSwitchCategory = switchCategory;
+switchCategory = function(cat) {
+  currentCat = cat;
+  currentEssayId = null;
+  showingVocab = false;
+  const vocBtn = document.getElementById('vocabTabBtn');
+  if (vocBtn) vocBtn.classList.remove('active');
+  renderSidebar();
+  renderContent();
+};
+
+// ===== 分类管理 =====
+const categoryIconPool = ['🌱', '🏮', '🇨🇳', '🤖', '🌸', '📖', '🎨', '🔬', '🌍', '💪', '🎵', '🏆', '💡', '🔥', '⭐', '🌈'];
+
+function openCategoryMgr() {
+  const ov = document.getElementById('catMgrOverlay');
+  const body = document.getElementById('catMgrBody');
+  const keys = Object.keys(essays);
+
+  body.innerHTML = keys.map((key, idx) => {
+    const cat = essays[key];
+    const essayCount = cat.essays.length;
+    return `
+      <div class="cat-mgr-item">
+        <input class="cat-icon-input" value="${cat.icon}" data-key="${key}" data-field="icon" maxlength="2" title="图标">
+        <input class="cat-name-input" value="${escapeHTML(cat.name)}" data-key="${key}" data-field="name" placeholder="分类名称" title="分类名称">
+        <span class="cat-essay-count">${essayCount} 篇</span>
+        <button class="cat-mgr-delete" onclick="deleteCategory('${key}')" title="删除分类">🗑</button>
+      </div>`;
+  }).join('');
+
+  ov.classList.add('show');
+}
+
+function closeCategoryMgr(e) {
+  if (!e || e.target === document.getElementById('catMgrOverlay')) {
+    closeCategoryMgrDirect();
+  }
+}
+
+function closeCategoryMgrDirect() {
+  // Save any edits from the input fields before closing
+  const inputs = document.querySelectorAll('#catMgrBody input[data-field]');
+  inputs.forEach(inp => {
+    const key = inp.dataset.key;
+    const field = inp.dataset.field;
+    const val = inp.value.trim();
+    if (val && essays[key] && essays[key][field] !== val) {
+      essays[key][field] = val;
+      if (field === 'name') {
+        essays[key].badge = val;
+      }
+    }
+  });
+  saveData();
+  renderSidebar();
+  document.getElementById('catMgrOverlay').classList.remove('show');
+}
+
+function addNewCategory() {
+  // Generate a unique key
+  let idx = 1;
+  while (essays['cat' + idx]) idx++;
+  const key = 'cat' + idx;
+  const icon = categoryIconPool[Math.floor(Math.random() * categoryIconPool.length)];
+
+  essays[key] = {
+    name: '新分类',
+    badge: '新分类',
+    badgeClass: getCatStyleClass(key).badgeClass,
+    icon: icon,
+    essays: []
+  };
+
+  saveData();
+  // Re-open the modal to show the new category
+  openCategoryMgr();
+  // Focus the new name input
+  setTimeout(() => {
+    const inputs = document.querySelectorAll('#catMgrBody .cat-name-input');
+    if (inputs.length > 0) {
+      inputs[inputs.length - 1].focus();
+      inputs[inputs.length - 1].select();
+    }
+  }, 100);
+  showToast('✅', '已添加新分类，请修改名称');
+}
+
+function deleteCategory(key) {
+  const cat = essays[key];
+  const essayCount = cat.essays.length;
+
+  if (essayCount > 0) {
+    const confirmed = confirm(`「${cat.name}」下有 ${essayCount} 篇文章，删除分类将同时删除所有文章。\n\n确定要删除吗？`);
+    if (!confirmed) return;
+  } else {
+    const confirmed = confirm(`确定要删除分类「${cat.name}」吗？`);
+    if (!confirmed) return;
+  }
+
+  // Don't delete the last category
+  if (Object.keys(essays).length <= 1) {
+    showToast('⚠️', '至少需要保留一个分类');
+    return;
+  }
+
+  delete essays[key];
+
+  // If current category was deleted, switch to first available
+  if (currentCat === key) {
+    currentCat = Object.keys(essays)[0];
+    currentEssayId = null;
+    showingVocab = false;
+  }
+
+  saveData();
+  openCategoryMgr();
+  renderSidebar();
+  renderContent();
+  showToast('🗑', `「${cat.name}」已删除`);
+}
+
+
+
+// ===== 用户认证系统 =====
+const USER_STORE_KEY = 'zm_user_accounts';
+const INVITE_CODE = '0616';
+let isLoginMode = true; // true = login, false = register
+
+function getUsers() {
+  try { return JSON.parse(localStorage.getItem(USER_STORE_KEY)) || {}; }
+  catch(e) { return {}; }
+}
+
+function saveUsers(users) {
+  localStorage.setItem(USER_STORE_KEY, JSON.stringify(users));
+}
+
+function getCurrentUserId() {
+  return sessionStorage.getItem('zm_current_user');
+}
+
+function setCurrentUserId(uid) {
+  sessionStorage.setItem('zm_current_user', uid);
+}
+
+function clearCurrentUser() {
+  sessionStorage.removeItem('zm_current_user');
+}
+
+function getCurrentUserPhone() {
+  const uid = getCurrentUserId();
+  if (!uid) return '';
+  if (uid.startsWith('invite_')) return '邀请码用户';
+  const users = getUsers();
+  for (const [phone, user] of Object.entries(users)) {
+    if (user.id === uid) return phone;
+  }
+  return uid;
+}
+
+// ===== 登录方式切换 =====
+function switchLoginTab(tab) {
+  const tabPhone = document.getElementById('tabPhone');
+  const tabInvite = document.getElementById('tabInvite');
+  const formPhone = document.getElementById('formPhone');
+  const formInvite = document.getElementById('formInvite');
+
+  if (tab === 'phone') {
+    tabPhone.classList.add('active');
+    tabInvite.classList.remove('active');
+    formPhone.style.display = 'flex';
+    formInvite.style.display = 'none';
+  } else {
+    tabPhone.classList.remove('active');
+    tabInvite.classList.add('active');
+    formPhone.style.display = 'none';
+    formInvite.style.display = 'flex';
+  }
+}
+
+// ===== 登录/注册模式切换 =====
+function toggleLoginMode() {
+  isLoginMode = !isLoginMode;
+  const btn = document.getElementById('btnPhoneSubmit');
+  const hint = document.getElementById('loginModeHint');
+  const link = document.getElementById('loginModeLink');
+  const confirmGroup = document.getElementById('loginConfirmPasswordGroup');
+
+  if (isLoginMode) {
+    btn.textContent = '登 录';
+    hint.textContent = '还没有账号？';
+    link.textContent = '立即注册';
+    confirmGroup.style.display = 'none';
+  } else {
+    btn.textContent = '注 册';
+    hint.textContent = '已有账号？';
+    link.textContent = '去登录';
+    confirmGroup.style.display = 'flex';
+  }
+}
+
+// ===== 手机号登录 =====
+function handlePhoneLogin() {
+  const phone = document.getElementById('loginPhone').value.trim();
+  const password = document.getElementById('loginPassword').value.trim();
+
+  if (!/^1\d{10}$/.test(phone)) {
+    showLoginError('请输入正确的11位手机号');
+    return;
+  }
+  if (password.length < 6) {
+    showLoginError('密码至少需要6位');
+    return;
+  }
+
+  const users = getUsers();
+
+  if (isLoginMode) {
+    // 登录
+    if (!users[phone]) {
+      showLoginError('该手机号尚未注册，请先注册');
+      return;
+    }
+    if (users[phone].password !== password) {
+      showLoginError('密码错误，请重试');
+      return;
+    }
+    setCurrentUserId(users[phone].id);
+    onLoginSuccess(phone);
+  } else {
+    // 注册
+    const confirmPwd = document.getElementById('loginConfirmPassword').value.trim();
+    if (password !== confirmPwd) {
+      showLoginError('两次输入的密码不一致');
+      return;
+    }
+    if (users[phone]) {
+      showLoginError('该手机号已注册，请直接登录');
+      return;
+    }
+    const userId = 'u_' + Date.now().toString(36);
+    users[phone] = { id: userId, password: password, createdAt: new Date().toISOString() };
+    saveUsers(users);
+    setCurrentUserId(userId);
+    onLoginSuccess(phone);
+  }
+}
+
+function showLoginError(msg) {
+  // Find or create error element
+  let errEl = document.getElementById('loginError');
+  if (!errEl) {
+    errEl = document.createElement('div');
+    errEl.id = 'loginError';
+    errEl.className = 'login-error';
+    const form = document.getElementById('formPhone');
+    const submit = form.querySelector('.login-submit');
+    form.insertBefore(errEl, submit);
+  }
+  errEl.textContent = msg;
+  setTimeout(() => { if (errEl) errEl.textContent = ''; }, 3000);
+}
+
+// ===== 邀请码登录 =====
+function handleInviteLogin() {
+  const code = document.getElementById('inviteCode').value.trim();
+  if (code !== INVITE_CODE) {
+    // Find or create error in invite form
+    let errEl = document.getElementById('inviteError');
+    if (!errEl) {
+      errEl = document.createElement('div');
+      errEl.id = 'inviteError';
+      errEl.className = 'login-error';
+      const form = document.getElementById('formInvite');
+      const submit = form.querySelector('.login-submit');
+      form.insertBefore(errEl, submit);
+    }
+    errEl.textContent = '邀请码错误';
+    setTimeout(() => { if (errEl) errEl.textContent = ''; }, 3000);
+    return;
+  }
+  const userId = 'invite_' + Date.now().toString(36);
+  setCurrentUserId(userId);
+  onLoginSuccess('邀请码用户');
+}
+
+// ===== 登录成功 =====
+function onLoginSuccess(displayName) {
+  document.getElementById('loginOverlay').classList.add('hidden');
+  // Show main app
+  initData();
+  renderContent();
+  // Update topbar
+  const userEl = document.getElementById('topbarUser');
+  if (userEl) userEl.textContent = '👤 ' + displayName;
+}
+
+// ===== 退出登录 =====
+function handleLogout() {
+  if (confirm('确定要退出登录吗？')) {
+    clearCurrentUser();
+    location.reload();
+  }
+}
+
+// ===== 页面初始化：检查登录状态 =====
+function checkAuth() {
+  const uid = getCurrentUserId();
+  if (uid) {
+    // Already logged in
+    document.getElementById('loginOverlay').classList.add('hidden');
+    const userEl = document.getElementById('topbarUser');
+    if (userEl) userEl.textContent = '👤 ' + getCurrentUserPhone();
+  } else {
+    // Show login page
+    document.getElementById('loginOverlay').classList.remove('hidden');
+  }
+}
+
+// Override initData to be called after auth
+const _origInitData = initData;
+initData = function() {
+  _origInitData();
+  renderSidebar();
+};
+
+
+
+// ===== 忘记密码 =====
+function showForgotPassword() {
+  document.getElementById('formPhone').style.display = 'none';
+  document.getElementById('formInvite').style.display = 'none';
+  document.getElementById('formForgotPassword').style.display = 'flex';
+  document.getElementById('tabPhone').style.display = 'none';
+  document.getElementById('tabInvite').style.display = 'none';
+}
+
+function hideForgotPassword() {
+  document.getElementById('formPhone').style.display = 'flex';
+  document.getElementById('formForgotPassword').style.display = 'none';
+  document.getElementById('tabPhone').style.display = '';
+  document.getElementById('tabInvite').style.display = '';
+  document.getElementById('forgotPhone').value = '';
+  document.getElementById('forgotNewPassword').value = '';
+  document.getElementById('forgotConfirmPassword').value = '';
+  document.getElementById('forgotError').textContent = '';
+}
+
+function handleResetPassword() {
+  const phone = document.getElementById('forgotPhone').value.trim();
+  const newPwd = document.getElementById('forgotNewPassword').value.trim();
+  const confirmPwd = document.getElementById('forgotConfirmPassword').value.trim();
+  const errEl = document.getElementById('forgotError');
+
+  if (!/^1\d{10}$/.test(phone)) {
+    errEl.textContent = '请输入正确的11位手机号';
+    return;
+  }
+  if (newPwd.length < 6) {
+    errEl.textContent = '新密码至少需要6位';
+    return;
+  }
+  if (newPwd !== confirmPwd) {
+    errEl.textContent = '两次输入的密码不一致';
+    return;
+  }
+
+  const users = getUsers();
+  if (!users[phone]) {
+    errEl.textContent = '该手机号尚未注册';
+    return;
+  }
+
+  users[phone].password = newPwd;
+  saveUsers(users);
+  showLoginError('密码重置成功，请返回登录');
+  setTimeout(() => hideForgotPassword(), 1500);
+}
+
+
+// ===== 启动 =====
+checkAuth();
+if (getCurrentUserId()) {
+  initData();
+  renderContent();
+}
+</script>
+</body>
+</html>
